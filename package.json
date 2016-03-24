@@ -1,0 +1,25 @@
+{
+  "name": "wunderschedule",
+  "version": "1.0.0",
+  "description": "A Node.js module that allows you to 'schedule' tasks to appear in your Wunderlist todos",
+  "main": "wunderschedule.js",
+  "dependencies": {
+    "datejs": "0.0.2",
+    "node-schedule": "^1.1.0",
+    "request": "^2.69.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://benjamincongdon@github.com/benjamincongdon/WunderSchedule.git"
+  },
+  "author": "Benjamin Congdon",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/benjamincongdon/WunderSchedule/issues"
+  },
+  "homepage": "https://github.com/benjamincongdon/WunderSchedule#readme"
+}
