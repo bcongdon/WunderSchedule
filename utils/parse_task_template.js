@@ -3,7 +3,7 @@ require('datejs');
 
 var exports = module.exports;
 
-function parseDateString(str) {
+exports.parseDateString = function(str) {
     "use strict";
     var date = Date.parse(str);
     if (str === "today") {
@@ -23,12 +23,12 @@ function parseContentString(str) {
             dateStr = lines[i].replace(/^start-date:/, '');
             //Remove whitepsace
             dateStr = dateStr.replace(/\s+/, "");
-            template_dict.start_date = parseDateString(dateStr);
+            template_dict.start_date = exports.parseDateString(dateStr);
         } else if (lines[i].startsWith("due-date:")) {
             dateStr = lines[i].replace(/^due-date:/, '');
             //Remove whitepsace
             dateStr = dateStr.replace(/\s+/, "");
-            template_dict.due_date = parseDateString(dateStr);
+            template_dict.due_date = exports.parseDateString(dateStr);
         } else if (lines[i].startsWith("starred")) {
             template_dict.starred = true;
         } else if (lines[i].startsWith("repeat-every: ")) {
