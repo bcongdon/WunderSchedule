@@ -9,6 +9,8 @@ var task = require("./utils/task.js");
 
 var scheduled = "scheduled";
 
+// Calls back with the list_id of "scheduled" list.
+// Makes the "scheduled" list if not found.
 function getScheduledListID(cb) {
     list_api.getListID(scheduled, function (list_id) {
         if(!list_id) {
@@ -18,6 +20,7 @@ function getScheduledListID(cb) {
     });
 }
 
+// Makes a list called "scheduled" and calls back with the list_id
 function makeScheduled(cb) {
     api.post({url: '/lists', body: {"title": scheduled}}, function (err, res, body) {
         if(err) {
@@ -27,14 +30,9 @@ function makeScheduled(cb) {
     });
 }
 
-function getRemindersFromTask(id, cb) {
-    api({url: '/reminders', qs: {task_id: id}}, function (err,res,body) {
-        cb(body);
-    });
-}
-
-function appendNote(id, text){
-    api({url: '/notes', qs:{task_id: id}},function(err,res,body){
+// Appends given text to the note associated with the given task_id
+function appendNote(task_id, text){
+    api({url: '/notes', qs:{task_id: task_id}},function(err,res,body){
         if(body.content){
             var contentStr = body.content + text;
             api.post({url:'/notes/:' + id ,qs:{revision: id, content: contentStr}});
@@ -42,12 +40,8 @@ function appendNote(id, text){
     });
 }
 
-function deleteReminder(id){
-    api.delete({url:'/reminders', qs:{task_id: id}}, function(err,res,body){
-        if(err) {process.exit(1)};
-    })
-}
-
+// Creates a task with the properties (due_date, list membership, starred
+// etc.) of the given template dictionary. Defaults list membership to 'inbox'
 function createTaskFromTemplate(template){
     var list_name = template.list || "inbox";
     console.log(list_name);
@@ -59,6 +53,10 @@ function createTaskFromTemplate(template){
     })
 }
 
+// Accepts a list of templates. For each template, we see if the start_date was
+// before 'now'. If that's the case, create a task from the template. Once
+// done, delete the template if it doesn't repeat, otherwise increment the
+// start/due dates and update the template.
 function handleTemplates(templates){
     var i = 0;
     var now = new Date();
@@ -85,6 +83,10 @@ function handleTemplates(templates){
     }
 }
 
+// Main checking function of WunderSchedule.
+// 1. Gets the list_id of "scheduled"
+// 2. Extracts templates from the notes in that list.
+// 3. Handles each template, which creates tasks if necessary.
 function wunderSchedule(){
     getScheduledListID(function(list_id){
         parse.extractTemplateTasks(list_id,function(templates){
