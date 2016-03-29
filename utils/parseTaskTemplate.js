@@ -1,7 +1,7 @@
 /*
     parseTaskTemplate
 
-    Handles parsing of task 'templates' as defined in the tasks of the 
+    Handles parsing of task 'templates' as defined in the tasks of the
     scheduled list.
 */
 
@@ -10,7 +10,9 @@ require('datejs');
 
 var exports = module.exports;
 
-exports.parseDateString = function(str) {
+// Parses date strings from template. Handles special cases like 'today'.
+// Returns a Date object.
+exports.parseDateString = function (str) {
     "use strict";
     var date = Date.parse(str);
     if (str === "today") {
@@ -19,7 +21,8 @@ exports.parseDateString = function(str) {
     return date;
 }
 
-//Parses the 'note' of a template tasks
+// Parses the 'note' of a template tasks. Extracts keywords like 'start-date',
+// etc. and returns a dictionary.
 function parseContentString(str) {
     "use strict";
     var template_dict = {};
@@ -28,7 +31,7 @@ function parseContentString(str) {
     for (i = 0; i < lines.length; i += 1) {
         if (lines[i].startsWith("start-date:")) {
             dateStr = lines[i].replace(/^start-date:/, '');
-            //Remove whitepsace
+            //Remove whitespace
             dateStr = dateStr.replace(/\s+/, "");
             template_dict.start_date = exports.parseDateString(dateStr);
         } else if (lines[i].startsWith("due-date:")) {
@@ -49,6 +52,9 @@ function parseContentString(str) {
     return template_dict;
 }
 
+// Takes a template dictionary and uses it to update the task that it came
+// from. (i.e. Necessary once a repeating task has run to update next start
+// date)
 exports.pushTemplateUpdate = function (template) {
     var contentStr = "";
     //BROKEN:
@@ -67,12 +73,13 @@ exports.pushTemplateUpdate = function (template) {
     note.updateNoteContent(contentStr, template.task_id);
 };
 
+
+// TODO
 function parseRepetitionToDates(rep){
     return new Date.parse("next " + rep);
 };
 
 exports.updateTemplateWithRepeat = function (task_template){
-    //TODO
     var rep_str = task_template.repeat_every;
     if (rep_str) {
         //Split by comma, remove whitespace
@@ -92,6 +99,8 @@ exports.updateTemplateWithRepeat = function (task_template){
     };
 };
 
+// Extracts templates from a given list. Tries to extract template dict from
+// each task in list, and calls back with a list of template dictionaries.
 exports.extractTemplateTasks = function (list_id, cb) {
     "use strict";
     note.getNoteList(list_id, function (res_body) {
