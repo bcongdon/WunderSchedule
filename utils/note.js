@@ -1,15 +1,18 @@
+/*
+    Note
+
+    Handles functions specific to the Note endpoint of Wunderlist
+*/
 var api = require('./api.js')
 
 var exports = module.exports;
 
-exports.getNotesFromList = function (list_id, cb){
-    api({url: '/notes', qs: {list_id: list_id}}, function (err,res,body) {
-        if (err) {
-            process.exit(1);
-        };
+// Calls back with a list of notes for given list_id
+exports.getNoteList = function(list_id, cb){
+    api({url: '/notes', qs: {list_id: list_id}}, function(err,res,body){
         cb(body);
     });
-};
+}
 
 exports.getNoteFromTask = function (task_id, cb){
     api({url: '/notes', qs: {task_id: task_id}}, function (err,res,body) {

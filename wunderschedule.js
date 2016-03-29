@@ -3,7 +3,7 @@ var scheduler = require('node-schedule');
 
 var api = require('./utils/api.js');
 var list_api = require('./utils/list.js');
-var parse = require('./utils/parse_task_template.js');
+var parse = require('./utils/parseTaskTemplate.js');
 var task = require("./utils/task.js");
 
 

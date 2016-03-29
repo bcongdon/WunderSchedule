@@ -41,3 +41,11 @@ exports.createTask = function (list_id, title, due_date, starred) {
         console.log(body);
     });
 };
+
+// Calls back with list of tasks for given list_id
+exports.getTaskList = function(list_id, cb){
+    api({url: '/tasks', qs: {list_id:list_id}},function(err,res,body){
+        if(err) process.exit(1);
+        cb(body);
+    });
+}

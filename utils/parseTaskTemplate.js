@@ -1,3 +1,10 @@
+/*
+    parseTaskTemplate
+
+    Handles parsing of task 'templates' as defined in the tasks of the 
+    scheduled list.
+*/
+
 var note = require('./note.js');
 require('datejs');
 
@@ -87,7 +94,7 @@ exports.updateTemplateWithRepeat = function (task_template){
 
 exports.extractTemplateTasks = function (list_id, cb) {
     "use strict";
-    note.getNotesFromList(list_id, function (res_body) {
+    note.getNoteList(list_id, function (res_body) {
         var templates = [], new_template = "";
         var i = 0;
         for (i = 0; i < res_body.length; i += 1) {

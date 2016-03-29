@@ -1,3 +1,11 @@
+/*
+    API
+
+    Handles requests to the Wunderlist api.
+    Wraps 'request' with default settings to access Wunderlist.
+*/
+
+
 var request = require('request')
 var credentials = require('./credentials.json')
 

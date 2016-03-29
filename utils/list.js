@@ -1,20 +1,14 @@
+/*
+	List
+
+	Handles functions specific to the List endpoint of Wunderlist
+*/
+
 var api = require("./api.js")
 
 var exports = module.exports
 
-exports.getTaskList = function(list_id, cb){
-	api({url: '/tasks', qs: {list_id:list_id}},function(err,res,body){
-		if(err) process.exit(1);
-		cb(body);
-	});
-}
-
-exports.getNotesFromList = function(list_id, cb){
-	api({url: '/notes', qs: {list_id: list_id}}, function(err,res,body){
-		cb(body);
-	});
-}
-
+// Calls back with list_id for given list_name if the list exists, otherwise false
 exports.getListID = function(list_name, cb){
 	api('/lists',function(err, res, body){
 
