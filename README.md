@@ -10,8 +10,11 @@ Then, just run `node wunderschedule.js` and something ~~will~~ might happen!
 
 ## Tags
 `start-date:` - Defines the date/time at which the scheduled task will appear in your todo
+
 `list:` - The name of the list you want the task to appear in. Defaults to `inbox`.
+
 `starred` - Whether or not the resulting task should be starred
+
 `due-date:` - Day when the task will be done
 
 ### Tags-to-be-done
