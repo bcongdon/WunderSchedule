@@ -96,7 +96,9 @@ function wunderSchedule(){
     })
 }
 
+wunderSchedule();
+
 //Every 1 minute
-//scheduler.scheduleJob("* * * * *", function(){
+scheduler.scheduleJob("* * * * *", function(){
     wunderSchedule();
-//})
+})

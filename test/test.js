@@ -1,9 +1,10 @@
 var assert = require('assert');
 var expect = require('chai').expect;
 
-var parse = require('./../utils/parse_task_template.js')
+var parse = require('./../utils/parseTaskTemplate.js')
+var api = require('./../utils/api.js')
 
-describe('Parse Task Template', function () {
+describe('parseTaskTemplate.js', function () {
   describe('parseDateString())', function () {
     it('should return 1 second ago when passed \'today\'', function () {
     	var correct = Date.today().setTimeToNow().addSeconds(-1);
@@ -22,4 +23,8 @@ describe('Parse Task Template', function () {
   describe('updateTemplateWithRepeat()', function () {
 
   });
+});
+
+describe('api.js', function () {
+  //TODO
 });
