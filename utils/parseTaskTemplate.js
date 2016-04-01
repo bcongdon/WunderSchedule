@@ -64,19 +64,9 @@ exports.templateToNoteString = function (template) {
 }
 
 // Takes a template dictionary and uses it to update the task that it came
-// from. (i.e. Necessary once a repeating task has run to update next start
+// from. (i.e. Once a repeating task has run to update next start
 // date)
 exports.pushTemplateUpdate = function (template) {
-    var contentStr = "";
-    //BROKEN:
-        //DateJS refuses to work right now, so yeah, will need to fix this.
-    // if (template.start_date) {
-    //     var start_date_string = Date(template.start_date).toShortDateString();
-    //     // contentStr += "start-date: " + template.start_date.toShortDateString() 
-    //     // + " " + template.start_date.toShortTimeString() + "\n";
-    // }
-    // 
-    console.log(contentStr);
     var template_string = exports.templateToNoteString(template);
     note.updateNoteContent(template_string, template.task_id);
 };
@@ -91,20 +81,20 @@ exports.updateTemplateWithRepeat = function (task_template){
     var rep_str = task_template.repeat_every;
     if (rep_str) {
         //Split by comma, remove whitespace
-        var rep_args = rep_str.split(",").map(function(str) { 
-            return str.replace(/\s+/, "" );
-        });
+        var rep_args = rep_str.split(",");
         var i = 0; 
         var rep_dates = [];
+        var currDate;
         for (i = 0; i < rep_args.length; i += 1){
-            rep_dates.push(parseRepetitionToDates(rep_args[i]));
+            currDate = parseRepetitionToDates(rep_args[i])
+            if(currDate.toString().length > 15) rep_dates.push(currDate);
         }
         rep_dates.sort();
-        console.log(rep_dates);
-        task_template.start_date = rep_dates[0].toString();
-
-        exports.pushTemplateUpdate(task_template);
+        if(!rep_dates[0]) return null;
+        task_template.start_date = rep_dates[0];
+        return task_template;
     };
+    return null;
 };
 
 // Extracts templates from a given list. Tries to extract template dict from

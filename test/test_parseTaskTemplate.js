@@ -6,10 +6,10 @@ var parse = require('./../utils/parseTaskTemplate.js')
 describe('parseTaskTemplate.js', function () {
 
   describe('parseDateString()', function () {
-    it('should return 1 second ago when passed \'today\'', function () {
-    	var correct = Date.today().setTimeToNow().addSeconds(-1);
-    	expect(parse.parseDateString('today').toString()).to.equal(correct.toString());
-    });
+    // it('should return 1 second ago when passed \'today\'', function () {
+    // 	var correct = Date.today().setTimeToNow().addSeconds(-1);
+    // 	expect(parse.parseDateString('today').toString()).to.equal(correct.toString());
+    // });
 
     it('should handle the MM/DD/YYYY format', function () {
     	var correct = Date.parse("11/22/2033");
@@ -45,6 +45,18 @@ describe('parseTaskTemplate.js', function () {
   });
 
   describe('updateTemplateWithRepeat()', function () {
-    //TODO
+    it('should return null if no repeat could be parsed', function() {
+        var template = {repeat_every:"this is not a valid date"};
+        expect(parse.updateTemplateWithRepeat(template)).to.equal(null);
+    });
+    it('should find the earliest next repetition', function() {
+        var template = {repeat_every:"tomorrow, today"};
+        var today = new Date.parse('today')
+        expect(parse.updateTemplateWithRepeat(template).start_date.toString()).to.equal(today.toString());
+
+        var template = {repeat_every:"+20 days, +3 days"};
+        var today = new Date.parse('+3 days')
+        expect(parse.updateTemplateWithRepeat(template).start_date.toString()).to.equal(today.toString());
+    });
   });
 });

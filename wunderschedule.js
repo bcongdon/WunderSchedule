@@ -76,7 +76,9 @@ function handleTemplates(templates){
                     task.deleteTask(curr.task_id);
                 } else {
                     //Otherwise, set start_date to next occurance
-                    parse.updateTemplateWithRepeat(curr);
+                    template = parse.updateTemplateWithRepeat(curr);
+
+                    if(template) parse.pushTemplateUpdate(template);
                 }
             }
         }
