@@ -52,6 +52,17 @@ function parseContentString(str) {
     return template_dict;
 }
 
+exports.templateToNoteString = function (template) {
+    var contentStr = ""
+    if (template.repeat_every) contentStr += "repeat-every: " + template.repeat_every + "\n";
+    if (template.starred) contentStr += "starred" + "\n";
+    if (template.list) contentStr += "list: " + template.list + "\n";
+    if (template.note) contentStr += "note: " + template.note + "\n";
+    if (template.due_date) contentStr += "due-date: " + template.due_date.toString('yyyy/MM/dd HH:mm:ss') + "\n";
+    if (template.start_date) contentStr += "start-date: " + template.due_date.toString('yyyy/MM/dd HH:mm:ss') + "\n";
+    return contentStr
+}
+
 // Takes a template dictionary and uses it to update the task that it came
 // from. (i.e. Necessary once a repeating task has run to update next start
 // date)
@@ -64,13 +75,10 @@ exports.pushTemplateUpdate = function (template) {
     //     // contentStr += "start-date: " + template.start_date.toShortDateString() 
     //     // + " " + template.start_date.toShortTimeString() + "\n";
     // }
-    // if (template.due_date) contentStr += "due-date: " + template.due_date.toShortDateString() + "\n";
-    if (template.repeat_every) contentStr += "repeat-every: " + template.repeat_every + "\n";
-    if (template.starred) contentStr += "starred" + "\n";
-    if (template.list) contentStr += "list: " + template.list;
-    if (template.note) contentStr += "note: " + template.note;
+    // 
     console.log(contentStr);
-    note.updateNoteContent(contentStr, template.task_id);
+    var template_string = exports.templateToNoteString(template);
+    note.updateNoteContent(template_string, template.task_id);
 };
 
 
