@@ -9,7 +9,7 @@ Then, copy `credentials_template.json` to `credentials.json` in `utils` and add 
 Then, just run `node wunderschedule.js` and something ~~will~~ might happen!
 
 ## Tags
-`start-date:` - Defines the date/time at which the scheduled task will appear in your todo
+`start-time:` - Defines the time (on due date) at which the scheduled task will appear in your todo
 
 `list:` - The name of the list you want the task to appear in. Defaults to `inbox`.
 

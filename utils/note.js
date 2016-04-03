@@ -17,6 +17,8 @@ exports.getNoteList = function(list_id, cb){
 exports.getNoteFromTask = function (task_id, cb){
     api({url: '/notes', qs: {task_id: task_id}}, function (err,res,body) {
         if (err) {
+            console.log("Error getting note from task")
+            console.log(err);
             process.exit(1);
         };
         cb(body[0]);
@@ -28,7 +30,7 @@ exports.updateNoteContent = function (content, task_id) {
         console.log(note);
         api.patch({url: '/notes/' + note.id, body: 
             {revision: note.revision, content: content}}, function (err, res, body) {
-                console.log(body);
+                // console.log(body);
             });
     });
 };

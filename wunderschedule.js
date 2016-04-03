@@ -44,10 +44,8 @@ function appendNote(task_id, text){
 // etc.) of the given template dictionary. Defaults list membership to 'inbox'
 function createTaskFromTemplate(template){
     var list_name = template.list || "inbox";
-    console.log(list_name);
     list_api.getListID(list_name, function(list_id){
         task.getTask(template.task_id,function(template_task){
-            console.log(template_task)
             task.createTask(list_id, template_task.title, template.due_date, template.starred);
         })
     })
@@ -64,15 +62,16 @@ function handleTemplates(templates){
     for(i = 0; i < templates.length; i++){
         var curr = templates[i];
         //Validate that template has start_date
-        if(curr.start_date){
+        if(curr.start_time){
             //See if start_date is before now
-            if(curr.start_date <= now){
+            if(curr.start_time <= now){
                 //Need to create task from template
-                console.log("Need to create " + curr.task_id);
+                console.log("Creating task for id " + curr.task_id);
                 createTaskFromTemplate(curr);
                 
                 //If not a repeating task, delete the spawning template
                 if(!curr.repeat_every){
+                    console.log("Deleting non-repeating task template. (" + curr.task_id + ")")
                     task.deleteTask(curr.task_id);
                 } else {
                     //Otherwise, set start_date to next occurance
@@ -92,15 +91,18 @@ function handleTemplates(templates){
 function wunderSchedule(){
     getScheduledListID(function(list_id){
         parse.extractTemplateTasks(list_id,function(templates){
-            console.log(templates);
+            console.log("Loaded " + templates.length + " task templates.")
             handleTemplates(templates);
         });
     })
 }
 
+console.log("[WunderSchedule] Running initial check.")
 wunderSchedule();
 
 //Every 1 minute
 scheduler.scheduleJob("* * * * *", function(){
+    console.log("[WunderSchedule] Running scheduled check at " + new Date().toString("yyyy-mm-dd HH:mm:ss"));
+
     wunderSchedule();
 })

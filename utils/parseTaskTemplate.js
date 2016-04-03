@@ -16,12 +16,13 @@ exports.parseDateString = function (str) {
     "use strict";
     var date = Date.parse(str);
     if (str === "today") {
-        date = Date.today().setTimeToNow().addSeconds(-1);
+        date = Date.today();
+        date.setTimeToNow().addSeconds(-1);
     }
     return date;
 }
 
-// Parses the 'note' of a template tasks. Extracts keywords like 'start-date',
+// Parses the 'note' of a template tasks. Extracts keywords like 'start-time',
 // etc. and returns a dictionary.
 function parseContentString(str) {
     "use strict";
@@ -29,11 +30,11 @@ function parseContentString(str) {
     var lines = str.split(/\r?\n/);
     var i = 0, dateStr = "";
     for (i = 0; i < lines.length; i += 1) {
-        if (lines[i].startsWith("start-date:")) {
-            dateStr = lines[i].replace(/^start-date:/, '');
-            //Remove whitespace
-            dateStr = dateStr.replace(/\s+/, "");
-            template_dict.start_date = exports.parseDateString(dateStr);
+        if (lines[i].startsWith("start-time:")) {
+            dateStr = lines[i].replace(/^start-time:/, '');
+            // //Remove whitespace
+            // dateStr = dateStr.replace(/\s+/, "");
+            template_dict.start_time_str = dateStr;
         } else if (lines[i].startsWith("due-date:")) {
             dateStr = lines[i].replace(/^due-date:/, '');
             //Remove whitepsace
@@ -49,6 +50,15 @@ function parseContentString(str) {
             template_dict.list = lines[i].replace(/^list: /, '');
         }
     }
+
+    // If no due date specified, default to today
+    if(!template_dict.due_date){
+        template_dict.due_date = exports.parseDateString("today");
+    }
+    
+    if(template_dict.start_time_str) {
+        template_dict.start_time = Date.parse(template_dict.due_date.toString("yyyy/MM/dd") + template_dict.start_time_str)
+    }
     return template_dict;
 }
 
@@ -59,7 +69,7 @@ exports.templateToNoteString = function (template) {
     if (template.list) contentStr += "list: " + template.list + "\n";
     if (template.note) contentStr += "note: " + template.note + "\n";
     if (template.due_date) contentStr += "due-date: " + template.due_date.toString('yyyy/MM/dd HH:mm:ss') + "\n";
-    if (template.start_date) contentStr += "start-date: " + template.due_date.toString('yyyy/MM/dd HH:mm:ss') + "\n";
+    if (template.start_time) contentStr += "start-time: " + template.due_date.toString('HH:mm:ss') + "\n";
     return contentStr
 }
 
@@ -91,7 +101,7 @@ exports.updateTemplateWithRepeat = function (task_template){
         }
         rep_dates.sort();
         if(!rep_dates[0]) return null;
-        task_template.start_date = rep_dates[0];
+        task_template.start_time = rep_dates[0];
         return task_template;
     };
     return null;
@@ -108,7 +118,7 @@ exports.extractTemplateTasks = function (list_id, cb) {
             if (res_body[i].content) {
                 new_template = parseContentString(res_body[i].content);
                 new_template.task_id = res_body[i].task_id;
-                console.log(res_body);
+                //console.log(res_body);
                 templates.push(new_template);
             }
         }
