@@ -30,23 +30,23 @@ function parseContentString(str) {
     var lines = str.split(/\r?\n/);
     var i = 0, dateStr = "";
     for (i = 0; i < lines.length; i += 1) {
-        if (lines[i].startsWith("start-time:")) {
+        if (lines[i].indexOf("start-time:") === 0) {
             dateStr = lines[i].replace(/^start-time:/, '');
             // //Remove whitespace
-            // dateStr = dateStr.replace(/\s+/, "");
+            dateStr = dateStr.replace(/\s+/, "");
             template_dict.start_time_str = dateStr;
-        } else if (lines[i].startsWith("due-date:")) {
+        } else if (lines[i].indexOf("due-date:") === 0) {
             dateStr = lines[i].replace(/^due-date:/, '');
             //Remove whitepsace
             dateStr = dateStr.replace(/\s+/, "");
             template_dict.due_date = exports.parseDateString(dateStr);
-        } else if (lines[i].startsWith("starred")) {
+        } else if (lines[i].indexOf("starred") === 0) {
             template_dict.starred = true;
-        } else if (lines[i].startsWith("repeat-every: ")) {
+        } else if (lines[i].indexOf("repeat-every: ") === 0) {
             template_dict.repeat_every = lines[i].replace(/^repeat-every: /, '');
-        } else if (lines[i].startsWith("note: ")) {
+        } else if (lines[i].indexOf("note: ") === 0) {
             template_dict.note = lines[i].replace(/^note: /, '');
-        } else if (lines[i].startsWith("list: ")) {
+        } else if (lines[i].indexOf("list: ") === 0) {
             template_dict.list = lines[i].replace(/^list: /, '');
         }
     }
