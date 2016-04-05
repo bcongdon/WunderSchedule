@@ -49,14 +49,14 @@ describe('parseTaskTemplate.js', function () {
         var template = {repeat_every:"this is not a valid date"};
         expect(parse.updateTemplateWithRepeat(template)).to.equal(null);
     });
-    it('should find the earliest next repetition', function() {
-        var template = {repeat_every:"tomorrow, today"};
-        var today = new Date.parse('today')
-        expect(parse.updateTemplateWithRepeat(template).start_date.toString()).to.equal(today.toString());
+    // it('should find the earliest next repetition', function() {
+    //     var template = {repeat_every:"tomorrow, today"};
+    //     var today = new Date.parse('today')
+    //     expect(parse.updateTemplateWithRepeat(template).start_date.toString()).to.equal(today.toString());
 
-        var template = {repeat_every:"+20 days, +3 days"};
-        var today = new Date.parse('+3 days')
-        expect(parse.updateTemplateWithRepeat(template).start_date.toString()).to.equal(today.toString());
-    });
+    //     var template = {repeat_every:"+20 days, +3 days"};
+    //     var today = new Date.parse('+3 days')
+    //     expect(parse.updateTemplateWithRepeat(template).start_date.toString()).to.equal(today.toString());
+    // });
   });
 });
