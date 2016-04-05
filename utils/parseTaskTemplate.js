@@ -57,7 +57,7 @@ function parseContentString(str) {
     }
     
     if(template_dict.start_time_str) {
-        template_dict.start_time = Date.parse(template_dict.due_date.toString("yyyy/MM/dd") + template_dict.start_time_str)
+        template_dict.start_time = Date.parse(template_dict.due_date.toString("yyyy/MM/dd") + " " + template_dict.start_time_str)
     }
     return template_dict;
 }

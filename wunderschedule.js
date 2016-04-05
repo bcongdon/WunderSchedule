@@ -92,6 +92,7 @@ function wunderSchedule(){
     getScheduledListID(function(list_id){
         parse.extractTemplateTasks(list_id,function(templates){
             console.log("Loaded " + templates.length + " task templates.")
+            // console.log(templates)
             handleTemplates(templates);
         });
     })
