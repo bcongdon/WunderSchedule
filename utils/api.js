@@ -7,14 +7,14 @@
 
 
 var request = require('request')
-var credentials = require('./credentials.json')
 
-var clientID = credentials.client_id;
-var accessToken = credentials.access_token;
+const Configstore = require('configstore');
+const pkg = require('../package.json');
+const config = new Configstore(pkg.name);
 
-if(!clientID || !accessToken){
-    console.log("Couldn't load credentials!")
-    process.exit(1);
+if(!(config.get("client_id") && config.get("access_token"))){
+    console.log("ERROR: Could not load credentials. Please run `wunderschedule auth` to input your login.")
+    process.exit(1)
 }
 
 module.exports = request.defaults({
@@ -22,8 +22,8 @@ module.exports = request.defaults({
     json: true,
     baseUrl: 'https://a.wunderlist.com/api/v1',
     headers: {
-        'X-Access-Token': accessToken,
-        'X-Client-ID': clientID,
+        'X-Access-Token': config.get("access_token"),
+        'X-Client-ID': config.get("client_id")
     }
 })
 

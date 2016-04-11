@@ -1,10 +1,11 @@
 var app = require('commander')
 var inquirer = require('inquirer')
 
+var request = require('request')
+
 const Configstore = require('configstore');
 const pkg = require('./package.json');
-const config = new Configstore(pkg.name, {foo: 'bar'});
-
+const config = new Configstore(pkg.name);
 
 var prompts = [
   {
@@ -25,6 +26,21 @@ var prompts = [
 
 console.log("Please create a Wunderlist Application and input your client_id and access_token below.")
 inquirer.prompt(prompts).then(function(answers) {
-    config.set("client_id", answers.client_id);
-    config.set("access_token", answers.access_token);
+    request.get({
+      json: true,
+      url: 'https://a.wunderlist.com/api/v1/user',
+      headers: {
+        'X-Access-Token': answers.access_token,
+        'X-Client-ID': answers.client_id
+      }
+    }, function (err, res, body) {
+      if(err || body.error || body.invalid_request || body.unauthorized){
+        console.log("ERROR: Could not authenticate with given credentials.")
+      }
+      else{
+        config.set("client_id", answers.client_id);
+        config.set("access_token", answers.access_token);
+        console.log("Credentials saved.")
+      }
+    });
 });
