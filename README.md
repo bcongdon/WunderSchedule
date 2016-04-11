@@ -1,5 +1,6 @@
 # WunderSchedule
-A Node.js module that allows you to 'schedule' tasks to appear in your Wunderlist todos
+  [![Build Status](https://travis-ci.org/benjamincongdon/WunderSchedule.svg?branch=master)](https://travis-ci.org/benjamincongdon/WunderSchedule)
+  >A Node.js module that allows you to 'schedule' tasks to appear in your Wunderlist todos
 
 ## Usage
 This module is not yet in a state that it would be useful to anyone.
