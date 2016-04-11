@@ -14,7 +14,6 @@ const config = new Configstore(pkg.name);
 
 if(!(config.get("client_id") && config.get("access_token"))){
     console.log("ERROR: Could not load credentials. Please run `wunderschedule auth` to input your login.")
-    process.exit(1)
 }
 
 module.exports = request.defaults({
@@ -26,4 +25,8 @@ module.exports = request.defaults({
         'X-Client-ID': config.get("client_id")
     }
 })
+
+module.exports.isAuthenticated = function() {
+    return config.get("authentication_date")
+}
 

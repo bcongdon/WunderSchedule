@@ -40,6 +40,7 @@ inquirer.prompt(prompts).then(function(answers) {
       else{
         config.set("client_id", answers.client_id);
         config.set("access_token", answers.access_token);
+        config.set("authentication_time", new Date())
         console.log("Credentials saved.")
       }
     });

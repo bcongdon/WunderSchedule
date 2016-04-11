@@ -89,6 +89,10 @@ function handleTemplates(templates){
 // 2. Extracts templates from the notes in that list.
 // 3. Handles each template, which creates tasks if necessary.
 function wunderSchedule(){
+    if(!api.isAuthenticated()){
+        console.log("FATAL: WunderSchedule cannot run without authentication credentials.");
+        process.exit(1);
+    }
     getScheduledListID(function(list_id){
         parse.extractTemplateTasks(list_id,function(templates){
             console.log("Loaded " + templates.length + " task templates.")
