@@ -1,6 +1,6 @@
 {
   "name": "wunderschedule",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "A Node.js module that allows you to 'schedule' tasks to appear in your Wunderlist todos",
   "main": "wunderschedule.js",
   "dependencies": {
@@ -10,6 +10,9 @@
     "inquirer": "^1.0.0",
     "node-schedule": "^1.1.0",
     "request": "^2.69.0"
+  },
+  "bin": {
+    "wunderschedule": "./wunderschedule.js"
   },
   "devDependencies": {
     "chai": "^3.5.0",

@@ -2,12 +2,13 @@
   [![Build Status](https://travis-ci.org/benjamincongdon/WunderSchedule.svg?branch=master)](https://travis-ci.org/benjamincongdon/WunderSchedule)
   >A Node.js module that allows you to 'schedule' tasks to appear in your Wunderlist todos
 
-## Usage
-This module is not yet in a state that it would be useful to anyone.
-However, if you do want to tinker around with it, you must go to the [Wunderlist Developer Portal](https://developer.wunderlist.com/apps) and register an app.
-Then, copy `credentials_template.json` to `credentials.json` in `utils` and add your `client_id` and `access_token` which you've created.
+## Installation
+1. Install with `npm install -g wunderschedule`.
+2. Go to the [Wunderlist Developer Portal](https://developer.wunderlist.com/apps) and register an app. Take note of your `Client ID`. Click `Create Access Token` and record the resulting token.
+3. Run `wunderschedule auth` and paste in your `Client ID` and `Access Token`.
 
-Then, just run `node wunderschedule.js` and something ~~will~~ might happen!
+## Usage
+  > TODO
 
 ## Tags
 `start-time:` - Defines the time (on due date) at which the scheduled task will appear in your todo
@@ -20,3 +21,6 @@ Then, just run `node wunderschedule.js` and something ~~will~~ might happen!
 
 ### Tags-to-be-done
 `repeat-every` - TODO
+
+## Attribution
+* Thanks to [Wunderline](https://github.com/we-are-next/wunderline/blob/master/wunderline.js) for their well documented code. A lot of the implimentation of Wunderschedule was inspired by Wunderline.
