@@ -6,21 +6,11 @@
 */
 
 var note = require('./note.js');
+var parseDate = require('./parseDate');
 require('datejs');
 
 var exports = module.exports;
 
-// Parses date strings from template. Handles special cases like 'today'.
-// Returns a Date object.
-exports.parseDateString = function (str) {
-    "use strict";
-    var date = Date.parse(str);
-    if (str === "today") {
-        date = Date.today();
-        date.setTimeToNow().addSeconds(-1);
-    }
-    return date;
-}
 
 // Parses the 'note' of a template tasks. Extracts keywords like 'start-time',
 // etc. and returns a dictionary.
@@ -39,7 +29,7 @@ function parseContentString(str) {
             dateStr = lines[i].replace(/^due-date:/, '');
             //Remove whitepsace
             dateStr = dateStr.replace(/\s+/, "");
-            template_dict.due_date = exports.parseDateString(dateStr);
+            template_dict.due_date = parseDate.parseDateString(dateStr);
         } else if (lines[i].indexOf("starred") === 0) {
             template_dict.starred = true;
         } else if (lines[i].indexOf("repeat-every: ") === 0) {
@@ -53,7 +43,7 @@ function parseContentString(str) {
 
     // If no due date specified, default to today
     if(!template_dict.due_date){
-        template_dict.due_date = exports.parseDateString("today");
+        template_dict.due_date = parseDate.parseDateString("today");
     }
     
     if(template_dict.start_time_str) {
@@ -82,12 +72,8 @@ exports.pushTemplateUpdate = function (template) {
 };
 
 
-// TODO
-function parseRepetitionToDates(rep){
-    return new Date.parse("next " + rep);
-};
-
 exports.updateTemplateWithRepeat = function (task_template){
+    "use strict";
     var rep_str = task_template.repeat_every;
     if (rep_str) {
         //Split by comma, remove whitespace
@@ -96,10 +82,14 @@ exports.updateTemplateWithRepeat = function (task_template){
         var rep_dates = [];
         var currDate;
         for (i = 0; i < rep_args.length; i += 1){
-            currDate = parseRepetitionToDates(rep_args[i])
+            currDate = parseDate.parseRepetitionToDates(rep_args[i])
             if(currDate.toString().length > 15) rep_dates.push(currDate);
         }
-        rep_dates.sort();
+
+        // Sorts repetition dates in 'ascending' order
+        rep_dates.sort(function(a,b){
+            return a - b;
+        });
         if(!rep_dates[0]) return null;
         task_template.start_time = rep_dates[0];
         return task_template;

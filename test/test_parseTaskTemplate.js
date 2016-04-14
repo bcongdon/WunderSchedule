@@ -4,18 +4,6 @@ var expect = require('chai').expect;
 var parse = require('./../utils/parseTaskTemplate.js')
 
 describe('parseTaskTemplate.js', function () {
-
-  describe('parseDateString()', function () {
-    // it('should return 1 second ago when passed \'today\'', function () {
-    // 	var correct = Date.today().setTimeToNow().addSeconds(-1);
-    // 	expect(parse.parseDateString('today').toString()).to.equal(correct.toString());
-    // });
-
-    it('should handle the MM/DD/YYYY format', function () {
-    	var correct = Date.parse("11/22/2033");
-    	expect(parse.parseDateString('11/22/2033').toString()).to.equal(correct.toString())
-    });
-  });
   
   describe('templateToNoteString()', function () {
     it('should return empty str with empty template', function () {
@@ -49,14 +37,18 @@ describe('parseTaskTemplate.js', function () {
         var template = {repeat_every:"this is not a valid date"};
         expect(parse.updateTemplateWithRepeat(template)).to.equal(null);
     });
-    // it('should find the earliest next repetition', function() {
-    //     var template = {repeat_every:"tomorrow, today"};
-    //     var today = new Date.parse('today')
-    //     expect(parse.updateTemplateWithRepeat(template).start_date.toString()).to.equal(today.toString());
+    it('should find the earliest next repetition', function() {
+        var template = {repeat_every:"tomorrow, today"};
+        var today = new Date.parse('today')
+        expect(parse.updateTemplateWithRepeat(template).start_time.toString()).to.equal(today.toString());
 
-    //     var template = {repeat_every:"+20 days, +3 days"};
-    //     var today = new Date.parse('+3 days')
-    //     expect(parse.updateTemplateWithRepeat(template).start_date.toString()).to.equal(today.toString());
-    // });
+        template = {repeat_every:"+20 days, +3 days"};
+        today = new Date.parse('+3 days')
+        expect(parse.updateTemplateWithRepeat(template).start_time.toString()).to.equal(today.toString());
+
+        template = {repeat_every:"+5 months, +3 years"};
+        today = new Date.parse('+5 months')
+        expect(parse.updateTemplateWithRepeat(template).start_time.toString()).to.equal(today.toString());
+    });
   });
 });
