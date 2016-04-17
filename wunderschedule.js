@@ -6,6 +6,6 @@ var app = require('commander')
 
 app
     .version(pkg.version)
-    .command('auth', 'Authenticate WunderSchedule')
-    .command('run', 'Checks for new scheduled tasks', {isDefault: true})
+    .command('auth', 'Authenticates WunderSchedule')
+    .command('run', 'Watches your "scheduled" list and creates new tasks when necessary', {isDefault: true})
     .parse(process.argv);

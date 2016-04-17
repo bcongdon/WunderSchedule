@@ -27,6 +27,6 @@ module.exports = request.defaults({
 })
 
 module.exports.isAuthenticated = function() {
-    return config.get("authentication_date")
+    return config.get("authentication_time")
 }
 

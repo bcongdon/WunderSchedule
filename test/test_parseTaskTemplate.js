@@ -49,6 +49,10 @@ describe('parseTaskTemplate.js', function () {
         template = {repeat_every:"+5 months, +3 years"};
         today = new Date.parse('+5 months')
         expect(parse.updateTemplateWithRepeat(template).start_time.toString()).to.equal(today.toString());
+
+        template = {repeat_every:"monday"};
+        today = new Date.parse('next monday')
+        expect(parse.updateTemplateWithRepeat(template).start_time.toString()).to.equal(today.toString());
     });
   });
 });
