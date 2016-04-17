@@ -58,8 +58,9 @@ exports.templateToNoteString = function (template) {
     if (template.starred) contentStr += "starred" + "\n";
     if (template.list) contentStr += "list: " + template.list + "\n";
     if (template.note) contentStr += "note: " + template.note + "\n";
-    if (template.due_date) contentStr += "due-date: " + template.due_date.toString('yyyy/MM/dd HH:mm:ss') + "\n";
-    if (template.start_time) contentStr += "start-time: " + template.due_date.toString('HH:mm:ss') + "\n";
+    if (template.due_date) contentStr += "due-date: " + template.due_date.toString('yyyy/MM/dd') + "\n";
+    if (template.start_time) contentStr += "start-time: " + new Date(template.start_time).toString('HH:mm:ss') + "\n";
+    
     return contentStr
 }
 
@@ -76,6 +77,7 @@ exports.updateTemplateWithRepeat = function (task_template){
     "use strict";
     var rep_str = task_template.repeat_every;
     if (rep_str) {
+        var old_due_time = task_template.due_date;
         //Split by comma, remove whitespace
         var rep_args = rep_str.split(",");
         var i = 0; 
@@ -91,7 +93,11 @@ exports.updateTemplateWithRepeat = function (task_template){
             return a - b;
         });
         if(!rep_dates[0]) return null;
-        task_template.start_time = rep_dates[0];
+        task_template.due_date = rep_dates[0];
+        task_template.due_date = new Date.parse(
+            task_template.due_date.toString("yyyy/MM/dd") + " " +
+            old_due_time.toString("HH:mm:ss")
+        );
         return task_template;
     };
     return null;

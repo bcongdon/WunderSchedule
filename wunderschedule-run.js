@@ -44,9 +44,10 @@ function appendNote(task_id, text){
 // etc.) of the given template dictionary. Defaults list membership to 'inbox'
 function createTaskFromTemplate(template){
     var list_name = template.list || "inbox";
+    var due_date = template.due_date;
     list_api.getListID(list_name, function(list_id){
         task.getTask(template.task_id,function(template_task){
-            task.createTask(list_id, template_task.title, template.due_date, template.starred);
+            task.createTask(list_id, template_task.title, due_date, template.starred);
         })
     })
 }
@@ -63,11 +64,17 @@ function handleTemplates(templates){
         var curr = templates[i];
         //Validate that template has start_date
         if(curr.start_time){
+            var start_date_time = curr.start_time;
+            if(curr.due_date){
+                var due_date_str = curr.due_date.toString('yyyy/MM/dd');
+                var start_time_str = curr.start_time.toString("HH:mm:ss");
+                start_date_time = new Date.parse(due_date_str + " " + start_time_str);
+            }
             //See if start_date is before now
-            if(curr.start_time <= now){
+            if(start_date_time <= now){
                 //Need to create task from template
                 console.log("Creating task for id " + curr.task_id);
-                createTaskFromTemplate(curr);
+                createTaskFromTemplate(curr)
                 
                 //If not a repeating task, delete the spawning template
                 if(!curr.repeat_every){
@@ -75,8 +82,7 @@ function handleTemplates(templates){
                     task.deleteTask(curr.task_id);
                 } else {
                     //Otherwise, set start_date to next occurance
-                    template = parse.updateTemplateWithRepeat(curr);
-
+                    var template = parse.updateTemplateWithRepeat(curr);
                     if(template) parse.pushTemplateUpdate(template);
                 }
             }
