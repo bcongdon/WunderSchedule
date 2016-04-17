@@ -94,10 +94,12 @@ exports.updateTemplateWithRepeat = function (task_template){
         });
         if(!rep_dates[0]) return null;
         task_template.due_date = rep_dates[0];
-        task_template.due_date = new Date.parse(
-            task_template.due_date.toString("yyyy/MM/dd") + " " +
-            old_due_time.toString("HH:mm:ss")
-        );
+        if(old_due_time){
+                task_template.due_date = new Date.parse(
+                task_template.due_date.toString("yyyy/MM/dd") + " " +
+                old_due_time.toString("HH:mm:ss")
+            );
+        }
         return task_template;
     };
     return null;

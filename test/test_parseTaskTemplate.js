@@ -27,7 +27,7 @@ describe('parseTaskTemplate.js', function () {
     it('should properly parse due_date, repeat_every, and start_time', function (){
       var testDate = Date.parse("1/1/2020")
       var template = {due_date: testDate, start_time: testDate, due_date: testDate};
-      var correct = "due-date: 2020/01/01 00:00:00\nstart-time: 00:00:00\n"
+      var correct = "due-date: 2020/01/01\nstart-time: 00:00:00\n"
       expect(parse.templateToNoteString(template)).to.equal(correct)
     });
   });
@@ -40,19 +40,19 @@ describe('parseTaskTemplate.js', function () {
     it('should find the earliest next repetition', function() {
         var template = {repeat_every:"tomorrow, today"};
         var today = new Date.parse('today')
-        expect(parse.updateTemplateWithRepeat(template).start_time.toString()).to.equal(today.toString());
+        expect(parse.updateTemplateWithRepeat(template).due_date.toString()).to.equal(today.toString());
 
         template = {repeat_every:"+20 days, +3 days"};
         today = new Date.parse('+3 days')
-        expect(parse.updateTemplateWithRepeat(template).start_time.toString()).to.equal(today.toString());
+        expect(parse.updateTemplateWithRepeat(template).due_date.toString()).to.equal(today.toString());
 
         template = {repeat_every:"+5 months, +3 years"};
         today = new Date.parse('+5 months')
-        expect(parse.updateTemplateWithRepeat(template).start_time.toString()).to.equal(today.toString());
+        expect(parse.updateTemplateWithRepeat(template).due_date.toString()).to.equal(today.toString());
 
         template = {repeat_every:"monday"};
         today = new Date.parse('next monday')
-        expect(parse.updateTemplateWithRepeat(template).start_time.toString()).to.equal(today.toString());
+        expect(parse.updateTemplateWithRepeat(template).due_date.toString()).to.equal(today.toString());
     });
   });
 });
