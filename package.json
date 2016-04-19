@@ -8,6 +8,7 @@
     "configstore": "^1.2.1",
     "datejs": "0.0.2",
     "inquirer": "^1.0.0",
+    "log": "^1.4.0",
     "node-schedule": "^1.1.0",
     "request": "^2.69.0"
   },
