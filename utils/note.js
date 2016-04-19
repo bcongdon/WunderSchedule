@@ -27,7 +27,6 @@ exports.getNoteFromTask = function (task_id, cb){
 
 exports.updateNoteContent = function (content, task_id) {
     exports.getNoteFromTask(task_id, function (note) {
-        console.log(note);
         api.patch({url: '/notes/' + note.id, body: 
             {revision: note.revision, content: content}}, function (err, res, body) {
                 // console.log(body);
