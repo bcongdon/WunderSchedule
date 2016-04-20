@@ -1,4 +1,6 @@
 var api = require('./api.js');
+var log = require("./logging.js").log;
+
 
 var exports = module.exports;
 
@@ -6,8 +8,8 @@ exports.getTask = function (id, cb) {
     'use strict';
     api({url: '/tasks/' + id}, function (err, res, body) {
         if (err) {
-            console.log("Error getting task!")
-            console.log(err)
+            log.error("Error getting task!")
+            log.error(err)
             process.exit(1);
         }
         cb(body);
@@ -19,8 +21,8 @@ exports.deleteTask = function (id) {
     exports.getTask(id, function (task) {
         api.del({url: '/tasks/' + id, qs: {revision: task.revision}}, function (err, res, body) {
             if (err) {
-                console.log("Error deleting task!")
-                console.log(err)
+                log.error("Error deleting task!")
+                log.error(err)
                 process.exit(1);
             }
         });
@@ -39,11 +41,10 @@ exports.createTask = function (list_id, title, due_date, starred) {
     };
     api.post({url: '/tasks', body: task_dict}, function (err, res, body) {
         if (err) {
-            console.log("Error creating task!")
-            console.log(err)
+            log.error("Error creating task!")
+            log.error(err)
             process.exit(1);
         }
-        //console.log(body);
     });
 };
 
@@ -51,8 +52,8 @@ exports.createTask = function (list_id, title, due_date, starred) {
 exports.getTaskList = function(list_id, cb){
     api({url: '/tasks', qs: {list_id:list_id}},function(err,res,body){
         if(err) {
-            console.log("Error getting task list!");
-            console.log(err)
+            log.error("Error getting task list!");
+            log.error(err)
             process.exit(1);
         }
         cb(body);

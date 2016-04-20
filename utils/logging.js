@@ -11,4 +11,4 @@ reader.on('line', function(line){
   console.log("[Wunderschedule] " + line.levelString + ": " + line.msg);
 })
 
-exports.logger = log;
+exports.log = log;

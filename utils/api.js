@@ -7,13 +7,15 @@
 
 
 var request = require('request')
+var log = require("./logging.js").log;
+
 
 const Configstore = require('configstore');
 const pkg = require('../package.json');
 const config = new Configstore(pkg.name);
 
 if(!(config.get("client_id") && config.get("access_token"))){
-    console.log("ERROR: Could not load credentials. Please run `wunderschedule auth` to input your login.")
+    log.error("Could not load credentials. Please run `wunderschedule auth` to input your login.")
 }
 
 module.exports = request.defaults({

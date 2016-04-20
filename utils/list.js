@@ -5,6 +5,8 @@
 */
 
 var api = require("./api.js")
+var log = require("./logging.js").log;
+
 
 var exports = module.exports
 
@@ -12,8 +14,8 @@ var exports = module.exports
 exports.getListID = function(list_name, cb){
 	api('/lists',function(err, res, body){
 		if(err){
-			console.log("Error getting list ID!")
-            console.log(err)
+			log.error("Error getting list ID!")
+            log.error(err)
             process.exit(1);
 		}
 		var i = 0;

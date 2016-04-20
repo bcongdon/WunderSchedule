@@ -4,6 +4,8 @@
     Handles functions specific to the Note endpoint of Wunderlist
 */
 var api = require('./api.js')
+var log = require("./logging.js").log;
+
 
 var exports = module.exports;
 
@@ -17,8 +19,8 @@ exports.getNoteList = function(list_id, cb){
 exports.getNoteFromTask = function (task_id, cb){
     api({url: '/notes', qs: {task_id: task_id}}, function (err,res,body) {
         if (err) {
-            console.log("Error getting note from task")
-            console.log(err);
+            log.error("Error getting note from task")
+            log.error(err);
             process.exit(1);
         };
         cb(body[0]);

@@ -5,6 +5,7 @@ var api = require('./utils/api.js');
 var list_api = require('./utils/list.js');
 var parse = require('./utils/parseTaskTemplate.js');
 var task = require("./utils/task.js");
+var log = require("./utils/logging.js").log;
 var app = require('commander')
 
 var scheduled = "scheduled";
@@ -73,12 +74,12 @@ function handleTemplates(templates){
             //See if start_date is before now
             if(start_date_time <= now){
                 //Need to create task from template
-                console.log("Creating task for id " + curr.task_id);
+                log.notice("Creating task for id " + curr.task_id);
                 createTaskFromTemplate(curr)
                 
                 //If not a repeating task, delete the spawning template
                 if(!curr.repeat_every){
-                    console.log("Deleting non-repeating task template. (" + curr.task_id + ")")
+                    log.notice("Deleting non-repeating task template. (" + curr.task_id + ")")
                     task.deleteTask(curr.task_id);
                 } else {
                     //Otherwise, set start_date to next occurance
@@ -96,24 +97,24 @@ function handleTemplates(templates){
 // 3. Handles each template, which creates tasks if necessary.
 function wunderSchedule(){
     if(!api.isAuthenticated()){
-        console.log("FATAL: WunderSchedule cannot run without authentication credentials.");
+        log.error("WunderSchedule cannot run without authentication credentials.");
         process.exit(1);
     }
     getScheduledListID(function(list_id){
         parse.extractTemplateTasks(list_id,function(templates){
-            console.log("Loaded " + templates.length + " task templates.")
+            log.info("Loaded " + templates.length + " task templates.")
             // console.log(templates)
             handleTemplates(templates);
         });
     })
 }
 
-console.log("[WunderSchedule] Running initial check.")
+log.info("Running initial check.")
 wunderSchedule();
 
 //Every 1 minute
 scheduler.scheduleJob("* * * * *", function(){
-    console.log("[WunderSchedule] Running scheduled check at " + new Date().toString("yyyy-mm-dd HH:mm:ss"));
+    log.info("Running scheduled check at " + new Date().toString("yyyy-mm-dd HH:mm:ss"));
 
     wunderSchedule();
 })
