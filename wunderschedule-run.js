@@ -74,12 +74,12 @@ function handleTemplates(templates){
             //See if start_date is before now
             if(start_date_time <= now){
                 //Need to create task from template
-                log.notice("Creating task for id " + curr.task_id);
+                log.info("Creating task for id " + curr.task_id);
                 createTaskFromTemplate(curr)
                 
                 //If not a repeating task, delete the spawning template
                 if(!curr.repeat_every){
-                    log.notice("Deleting non-repeating task template. (" + curr.task_id + ")")
+                    log.info("Deleting non-repeating task template. (" + curr.task_id + ")")
                     task.deleteTask(curr.task_id);
                 } else {
                     //Otherwise, set start_date to next occurance
@@ -103,7 +103,6 @@ function wunderSchedule(){
     getScheduledListID(function(list_id){
         parse.extractTemplateTasks(list_id,function(templates){
             log.info("Loaded " + templates.length + " task templates.")
-            // console.log(templates)
             handleTemplates(templates);
         });
     })

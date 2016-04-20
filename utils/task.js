@@ -1,3 +1,4 @@
+"use strict";
 var api = require('./api.js');
 var log = require("./logging.js").log;
 

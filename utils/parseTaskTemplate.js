@@ -1,3 +1,4 @@
+"use strict";
 /*
     parseTaskTemplate
 
@@ -7,6 +8,7 @@
 
 var note = require('./note.js');
 var parseDate = require('./parseDate');
+var log = require("./logging.js").log;
 require('datejs');
 
 var exports = module.exports;
@@ -49,6 +51,7 @@ function parseContentString(str) {
     if(template_dict.start_time_str) {
         template_dict.start_time = Date.parse(template_dict.due_date.toString("yyyy/MM/dd") + " " + template_dict.start_time_str)
     }
+
     return template_dict;
 }
 
@@ -115,8 +118,10 @@ exports.extractTemplateTasks = function (list_id, cb) {
         for (i = 0; i < res_body.length; i += 1) {
             if (res_body[i].content) {
                 new_template = parseContentString(res_body[i].content);
+                if(!('start_time' in new_template)){
+                    log.warn("Task with id " + res_body[i].id + " has no start time!")
+                }
                 new_template.task_id = res_body[i].task_id;
-                //console.log(res_body);
                 templates.push(new_template);
             }
         }
