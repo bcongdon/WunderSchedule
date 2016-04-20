@@ -9,6 +9,7 @@
     "datejs": "0.0.2",
     "inquirer": "^1.0.0",
     "log": "^1.4.0",
+    "log-rotate": "^0.2.7",
     "node-schedule": "^1.1.0",
     "request": "^2.69.0"
   },
