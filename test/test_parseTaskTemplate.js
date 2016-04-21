@@ -1,5 +1,7 @@
 var assert = require('assert');
 var expect = require('chai').expect;
+require('datejs');
+
 
 var parse = require('./../utils/parseTaskTemplate.js')
 
@@ -10,26 +12,72 @@ describe('parseTaskTemplate.js', function () {
       expect(parse.templateToNoteString({})).to.equal("");
     });
 
-    it('should properly parse starred', function (){
+    it('should properly format starred', function (){
       var template = {starred: true};
       expect(parse.templateToNoteString(template)).to.equal("starred\n")
     });
 
-    it('should properly parse list', function (){
+    it('should properly format list', function (){
       var template = {list: 'test'};
       expect(parse.templateToNoteString(template)).to.equal("list: test\n")
     });
 
-    it('should properly parse note', function (){
+    it('should properly format note', function (){
       var template = {note: 'hello world'};
       expect(parse.templateToNoteString(template)).to.equal("note: hello world\n")
     });
-    it('should properly parse due_date, repeat_every, and start_time', function (){
+    it('should properly format due_date, repeat_every, and start_time', function (){
       var testDate = Date.parse("1/1/2020")
-      var template = {due_date: testDate, start_time: testDate, due_date: testDate};
-      var correct = "due-date: 2020/01/01\nstart-time: 12:00 AM\n"
+      var template = {due_date: testDate, start_time: testDate, repeat_every: "day"};
+      var correct = "repeat-every: day\ndue-date: 2020/01/01\nstart-time: 12:00 AM\n"
       expect(parse.templateToNoteString(template)).to.equal(correct)
     });
+  });
+
+  describe('parseContentString()', function() {
+    it('should extract due-date correctly', function() {
+      var contentStr = "due-date: 3/14/16"
+      var parsed = new Date.parse("3/14/16");
+      expect(parse.parseContentString(contentStr).due_date.toString()).to.equal(parsed.toString());
+    });
+    it('should extract start-time correctly', function() {
+      var contentStr = "start-time: 5pm"
+      var parsed = new Date.parse("5pm");
+      expect(parse.parseContentString(contentStr).start_time.toString()).to.equal(parsed.toString());
+    });
+    it('should default due-date to today', function() {
+      var contentStr = "start-time: 5pm"
+      var parsed = new Date.parse("today at 12pm")
+      expect(parse.parseContentString(contentStr).due_date.toString()).to.equal(parsed.toString());
+    });
+    it('should extract repeat-every', function() {
+      var contentStr = "repeat-every: tuesday";
+      var parsed = "tuesday";
+      expect(parse.parseContentString(contentStr).repeat_every).to.equal(parsed);
+    });
+    it('should extract note, list', function() {
+      var contentStr = "note: hello\nlist: groceries";
+      var note = "hello"
+      var list = "groceries"
+      var template_dict = parse.parseContentString(contentStr);
+      expect(template_dict.note).to.equal(note);
+      expect(template_dict.list).to.equal(list);
+    });
+  });
+
+  describe('removePrefix()', function() {
+    it('should remove prefix *without* whitespace following', function(){
+      var prefix = 'my_prefix:'
+      var input = 'my_prefix:value'
+      var output = 'value'
+      expect(parse.removePrefix(input, prefix)).to.equal(output);
+    });
+    it('should remove prefix *with* whitespace following', function(){
+      var prefix = 'my_prefix:'
+      var input = 'my_prefix:   value'
+      var output = 'value'
+      expect(parse.removePrefix(input, prefix)).to.equal(output);
+    })
   });
 
   describe('updateTemplateWithRepeat()', function () {

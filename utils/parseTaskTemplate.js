@@ -13,39 +13,39 @@ require('datejs');
 
 var exports = module.exports;
 
+// Removes prefix and following whitespace from str
+exports.removePrefix = function (str, prefix) {
+    var re = new RegExp("\^" + prefix +  "(\\s+)?","g")
+    return str.replace(re, "");
+}
 
 // Parses the 'note' of a template tasks. Extracts keywords like 'start-time',
 // etc. and returns a dictionary.
-function parseContentString(str) {
+exports.parseContentString = function(str) {
     "use strict";
     var template_dict = {};
     var lines = str.split(/\r?\n/);
     var i = 0, dateStr = "";
     for (i = 0; i < lines.length; i += 1) {
         if (lines[i].indexOf("start-time:") === 0) {
-            dateStr = lines[i].replace(/^start-time:/, '');
-            // //Remove whitespace
-            dateStr = dateStr.replace(/\s+/, "");
-            template_dict.start_time_str = dateStr;
+            template_dict.start_time_str = exports.removePrefix(lines[i], "start-time:");
         } else if (lines[i].indexOf("due-date:") === 0) {
-            dateStr = lines[i].replace(/^due-date:/, '');
-            //Remove whitepsace
-            dateStr = dateStr.replace(/\s+/, "");
+            dateStr = exports.removePrefix(lines[i], "due-date:");
             template_dict.due_date = parseDate.parseDateString(dateStr);
         } else if (lines[i].indexOf("starred") === 0) {
             template_dict.starred = true;
-        } else if (lines[i].indexOf("repeat-every: ") === 0) {
-            template_dict.repeat_every = lines[i].replace(/^repeat-every: /, '');
-        } else if (lines[i].indexOf("note: ") === 0) {
-            template_dict.note = lines[i].replace(/^note: /, '');
-        } else if (lines[i].indexOf("list: ") === 0) {
-            template_dict.list = lines[i].replace(/^list: /, '');
+        } else if (lines[i].indexOf("repeat-every:") === 0) {
+            template_dict.repeat_every = exports.removePrefix(lines[i], "repeat-every:")
+        } else if (lines[i].indexOf("note:") === 0) {
+            template_dict.note = exports.removePrefix(lines[i], "note:")
+        } else if (lines[i].indexOf("list:") === 0) {
+            template_dict.list = exports.removePrefix(lines[i], "list:")
         }
     }
 
     // If no due date specified, default to today
     if(!template_dict.due_date){
-        template_dict.due_date = parseDate.parseDateString("today");
+        template_dict.due_date = parseDate.parseDateString("today at 12pm");
     }
     
     if(template_dict.start_time_str) {
@@ -110,6 +110,7 @@ exports.updateTemplateWithRepeat = function (task_template){
         }
         return task_template;
     };
+    log.error("Template with id " + task_template.task_id + " does not have a repetition defined.")
     return null;
 };
 
@@ -122,7 +123,7 @@ exports.extractTemplateTasks = function (list_id, cb) {
         var i = 0;
         for (i = 0; i < res_body.length; i += 1) {
             if (res_body[i].content) {
-                new_template = parseContentString(res_body[i].content);
+                new_template = exports.parseContentString(res_body[i].content);
                 if(!('start_time' in new_template)){
                     log.warn("Task with id " + res_body[i].id + " has no start time!")
                 }
