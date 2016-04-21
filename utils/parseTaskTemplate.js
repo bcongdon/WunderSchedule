@@ -62,7 +62,7 @@ exports.templateToNoteString = function (template) {
     if (template.list) contentStr += "list: " + template.list + "\n";
     if (template.note) contentStr += "note: " + template.note + "\n";
     if (template.due_date) contentStr += "due-date: " + template.due_date.toString('yyyy/MM/dd') + "\n";
-    if (template.start_time) contentStr += "start-time: " + new Date(template.start_time).toString('HH:mm:ss') + "\n";
+    if (template.start_time) contentStr += "start-time: " + new Date(template.start_time).toString('hh:mm tt') + "\n";
     
     return contentStr
 }
@@ -95,12 +95,17 @@ exports.updateTemplateWithRepeat = function (task_template){
         rep_dates.sort(function(a,b){
             return a - b;
         });
-        if(!rep_dates[0]) return null;
+
+        // No 'earliest' date
+        if(!rep_dates[0]) {
+            log.warn("Couldn't parse repeat for task template with id " + task_template.task_id);
+            return null
+        }
         task_template.due_date = rep_dates[0];
         if(old_due_time){
                 task_template.due_date = new Date.parse(
                 task_template.due_date.toString("yyyy/MM/dd") + " " +
-                old_due_time.toString("HH:mm:ss")
+                old_due_time.toString("hh:mm tt")
             );
         }
         return task_template;

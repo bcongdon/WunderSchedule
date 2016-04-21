@@ -108,10 +108,10 @@ function wunderSchedule(){
     })
 }
 
-log.info("Running initial check.")
+log.info("Setup and watching scheduled list.")
 wunderSchedule();
 
-//Every 1 minute
+// Run every 1 minute
 scheduler.scheduleJob("* * * * *", function(){
     log.info("Running scheduled check at " + new Date().toString("yyyy-mm-dd HH:mm:ss"));
 
