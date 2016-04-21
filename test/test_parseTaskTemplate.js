@@ -27,7 +27,7 @@ describe('parseTaskTemplate.js', function () {
     it('should properly parse due_date, repeat_every, and start_time', function (){
       var testDate = Date.parse("1/1/2020")
       var template = {due_date: testDate, start_time: testDate, due_date: testDate};
-      var correct = "due-date: 2020/01/01\nstart-time: 00:00:00\n"
+      var correct = "due-date: 2020/01/01\nstart-time: 12:00 AM\n"
       expect(parse.templateToNoteString(template)).to.equal(correct)
     });
   });
