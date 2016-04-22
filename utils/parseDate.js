@@ -1,4 +1,6 @@
 require('datejs');
+var log = require("./logging.js").log;
+
 
 var exports = module.exports;
 
@@ -11,6 +13,9 @@ exports.parseDateString = function (str) {
     if (str === "today") {
         date = Date.today();
         date.setTimeToNow().addSeconds(-1);
+    }
+    if(!date){
+        log.warn("Could not parse \"" + str + "\" to a date.")
     }
     return date;
 }
