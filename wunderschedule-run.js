@@ -48,7 +48,7 @@ function createTaskFromTemplate(template){
     var due_date = template.due_date;
     list_api.getListID(list_name, function(list_id){
         task.getTask(template.task_id,function(template_task){
-            task.createTask(list_id, template_task.title, due_date, template.starred);
+            task.createTask(list_id, template_task.title, due_date.toISOString(), template.starred);
         })
     })
 }
