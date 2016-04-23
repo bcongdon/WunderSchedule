@@ -82,25 +82,25 @@ describe('parseTaskTemplate.js', function () {
 
   describe('updateTemplateWithRepeat()', function () {
     it('should return null if no repeat could be parsed', function() {
-        var template = {repeat_every:"this is not a valid date"};
-        expect(parse.updateTemplateWithRepeat(template)).to.equal(null);
+      var template = {repeat_every:"this is not a valid date"};
+      expect(parse.updateTemplateWithRepeat(template)).to.equal(null);
     });
     it('should find the earliest next repetition', function() {
-        var template = {repeat_every:"tomorrow, today"};
-        var today = new Date.parse('today')
-        expect(parse.updateTemplateWithRepeat(template).due_date.toString()).to.equal(today.toString());
+      var template = {repeat_every:"tomorrow, today"};
+      var today = new Date.parse('today')
+      expect(parse.updateTemplateWithRepeat(template).due_date.toString()).to.equal(today.toString());
 
-        template = {repeat_every:"+20 days, +3 days"};
-        today = new Date.parse('+3 days')
-        expect(parse.updateTemplateWithRepeat(template).due_date.toString()).to.equal(today.toString());
+      template = {repeat_every:"+20 days, +3 days"};
+      today = new Date.parse('+3 days')
+      expect(parse.updateTemplateWithRepeat(template).due_date.toString()).to.equal(today.toString());
 
-        template = {repeat_every:"+5 months, +3 years"};
-        today = new Date.parse('+5 months')
-        expect(parse.updateTemplateWithRepeat(template).due_date.toString()).to.equal(today.toString());
+      template = {repeat_every:"+5 months, +3 years"};
+      today = new Date.parse('+5 months')
+      expect(parse.updateTemplateWithRepeat(template).due_date.toString()).to.equal(today.toString());
 
-        template = {repeat_every:"monday"};
-        today = new Date.parse('next monday')
-        expect(parse.updateTemplateWithRepeat(template).due_date.toString()).to.equal(today.toString());
+      template = {repeat_every:"monday"};
+      today = new Date.parse('next monday')
+      expect(parse.updateTemplateWithRepeat(template).due_date.toString()).to.equal(today.toString());
     });
   });
 });

@@ -13,6 +13,32 @@ require('datejs');
 
 var exports = module.exports;
 
+var start_time_strings = ['start-time:',
+                            'start-date:',
+                            's:',
+                            'start:'];
+var due_date_strings = ['due-date:',
+                          'due:',
+                          'd:'];
+
+var repeat_every_strings = ['repeat-every:',
+                              'repeat:',
+                              'r:'];
+
+
+// Line starts with one of the strings in strings
+exports.isProperty = function(line, strings){
+    var retVal = false;
+    strings.forEach(function(prefix){
+        if(line.indexOf(prefix) === 0){
+            retVal = true;
+        }
+    });
+    return retVal;
+}
+
+console.log(exports.isProperty("start-time: fdsj", start_time_strings));
+
 // Removes prefix and following whitespace from str
 exports.removePrefix = function (str, prefix) {
     var re = new RegExp("\^" + prefix +  "(\\s+)?","g")
@@ -27,14 +53,14 @@ exports.parseContentString = function(str) {
     var lines = str.split(/\r?\n/);
     var i = 0, dateStr = "";
     for (i = 0; i < lines.length; i += 1) {
-        if (lines[i].indexOf("start-time:") === 0) {
+        if (exports.isProperty(lines[i], start_time_strings)) {
             template_dict.start_time_str = exports.removePrefix(lines[i], "start-time:");
-        } else if (lines[i].indexOf("due-date:") === 0) {
+        } else if (exports.isProperty(lines[i], due_date_strings)) {
             dateStr = exports.removePrefix(lines[i], "due-date:");
             template_dict.due_date = parseDate.parseDateString(dateStr);
         } else if (lines[i].indexOf("starred") === 0) {
             template_dict.starred = true;
-        } else if (lines[i].indexOf("repeat-every:") === 0) {
+        } else if (exports.isProperty(lines[i], repeat_every_strings)) {
             template_dict.repeat_every = exports.removePrefix(lines[i], "repeat-every:")
         } else if (lines[i].indexOf("note:") === 0) {
             template_dict.note = exports.removePrefix(lines[i], "note:")
