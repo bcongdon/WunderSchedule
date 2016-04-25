@@ -26,4 +26,9 @@ var log = new(winston.Logger)({
     ]
 });
 
+// Direct uncaught exceptions to error logs
+process.on('uncaughtException', function (error) {
+   log.error(error.stack);
+});
+
 exports.log = log;
