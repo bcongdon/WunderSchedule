@@ -14,7 +14,6 @@ require('datejs');
 var exports = module.exports;
 
 var start_time_strings = ['start-time:',
-                            'start-date:',
                             's:',
                             'start:'];
 
@@ -25,6 +24,15 @@ var due_date_strings = ['due-date:',
 var repeat_every_strings = ['repeat-every:',
                               'repeat:',
                               'r:'];
+
+var starred_strings = ['starred',
+                       'star'];
+
+var note_strings = ['note',
+                    'n'];
+
+var list_strings = ['list',
+                    'l']
 
 
 // Line starts with one of the strings in strings
@@ -60,13 +68,13 @@ exports.parseContentString = function(str) {
         } else if (exports.startsWithOneOf(lines[i], due_date_strings)) {
             dateStr = exports.removePrefix(lines[i]);
             template_dict.due_date = parseDate.parseDateString(dateStr);
-        } else if (lines[i].indexOf("starred") === 0) {
+        } else if (exports.startsWithOneOf(lines[i], starred_strings)) {
             template_dict.starred = true;
         } else if (exports.startsWithOneOf(lines[i], repeat_every_strings)) {
             template_dict.repeat_every = exports.removePrefix(lines[i])
-        } else if (lines[i].indexOf("note:") === 0) {
+        } else if (exports.startsWithOneOf(lines[i], note_strings)) {
             template_dict.note = exports.removePrefix(lines[i])
-        } else if (lines[i].indexOf("list:") === 0) {
+        } else if (exports.startsWithOneOf(lines[i], list_strings)) {
             template_dict.list = exports.removePrefix(lines[i])
         }
     }

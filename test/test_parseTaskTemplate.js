@@ -35,33 +35,78 @@ describe('parseTaskTemplate.js', function () {
   });
 
   describe('parseContentString()', function() {
+    // Due Date Tests
     it('should extract due-date correctly', function() {
       var contentStr = "due-date: 3/14/16"
       var parsed = new Date.parse("3/14/16");
       expect(parse.parseContentString(contentStr).due_date.toString()).to.equal(parsed.toString());
     });
-    it('should extract start-time correctly', function() {
-      var contentStr = "start-time: 5pm"
-      var parsed = new Date.parse("5pm");
-      expect(parse.parseContentString(contentStr).start_time.toString()).to.equal(parsed.toString());
+    it('should extract due-date with shortened tags', function() {
+      var parsed = new Date.parse("3/14/16");
+
+      var contentStr = "due: 3/14/16"
+      expect(parse.parseContentString(contentStr).due_date.toString()).to.equal(parsed.toString());
+
+      contentStr = "d: 3/14/16"
+      expect(parse.parseContentString(contentStr).due_date.toString()).to.equal(parsed.toString());
     });
     it('should default due-date to today', function() {
       var contentStr = "start-time: 5pm"
       var parsed = new Date.parse("today at 12pm")
       expect(parse.parseContentString(contentStr).due_date.toString()).to.equal(parsed.toString());
     });
+
+    // Start Time Tests
+    it('should extract start-time correctly', function() {
+      var contentStr = "start-time: 5pm"
+      var parsed = new Date.parse("5pm");
+      expect(parse.parseContentString(contentStr).start_time.toString()).to.equal(parsed.toString());
+    });
+    it('should extract start-time with shortened tags', function() {
+      var parsed = new Date.parse("5pm");
+
+      var contentStr = "start: 5pm"
+      expect(parse.parseContentString(contentStr).start_time.toString()).to.equal(parsed.toString());
+
+      contentStr = "s: 5pm"
+      expect(parse.parseContentString(contentStr).start_time.toString()).to.equal(parsed.toString());
+    })
+
+    // Repeat Every Tests
     it('should extract repeat-every', function() {
       var contentStr = "repeat-every: tuesday";
       var parsed = "tuesday";
       expect(parse.parseContentString(contentStr).repeat_every).to.equal(parsed);
     });
-    it('should extract note, list', function() {
-      var contentStr = "note: hello\nlist: groceries";
+    it('should extract repeat-every with shortened tags', function() {
+      var contentStr = "repeat: tuesday";
+      var parsed = "tuesday";
+      expect(parse.parseContentString(contentStr).repeat_every).to.equal(parsed);
+
+      contentStr = "r: tuesday"
+      expect(parse.parseContentString(contentStr).repeat_every).to.equal(parsed);
+    });
+
+    // Misc. Properties tests
+    it('should extract note, list, starred', function() {
+      var contentStr = "note: hello\nlist: groceries\nstarred";
       var note = "hello"
       var list = "groceries"
+      var starred = true
       var template_dict = parse.parseContentString(contentStr);
       expect(template_dict.note).to.equal(note);
       expect(template_dict.list).to.equal(list);
+      expect(template_dict.starred).to.equal(true);
+    });
+    it('should extract note, list, starred with shortened tags', function(){
+      var contentStr = "n: hello\nl: groceries\nstar";
+      var note = "hello"
+      var list = "groceries"
+      var starred = true
+      var template_dict = parse.parseContentString(contentStr);
+      expect(template_dict.note).to.equal(note);
+      expect(template_dict.list).to.equal(list);
+      expect(template_dict.starred).to.equal(true);
     });
   });
 
