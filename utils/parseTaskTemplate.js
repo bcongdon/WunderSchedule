@@ -13,16 +13,16 @@ require('datejs');
 
 var exports = module.exports;
 
-const start_time_strings = ['start-time:',
+var start_time_strings = ['start-time:',
                             'start-date:',
                             's:',
                             'start:'];
 
-const due_date_strings = ['due-date:',
+var due_date_strings = ['due-date:',
                           'due:',
                           'd:'];
 
-const repeat_every_strings = ['repeat-every:',
+var repeat_every_strings = ['repeat-every:',
                               'repeat:',
                               'r:'];
 
