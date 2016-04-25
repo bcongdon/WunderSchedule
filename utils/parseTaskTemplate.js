@@ -13,21 +13,22 @@ require('datejs');
 
 var exports = module.exports;
 
-var start_time_strings = ['start-time:',
+const start_time_strings = ['start-time:',
                             'start-date:',
                             's:',
                             'start:'];
-var due_date_strings = ['due-date:',
+
+const due_date_strings = ['due-date:',
                           'due:',
                           'd:'];
 
-var repeat_every_strings = ['repeat-every:',
+const repeat_every_strings = ['repeat-every:',
                               'repeat:',
                               'r:'];
 
 
 // Line starts with one of the strings in strings
-exports.isProperty = function(line, strings){
+exports.startsWithOneOf = function(line, strings){
     var retVal = false;
     strings.forEach(function(prefix){
         if(line.indexOf(prefix) === 0){
@@ -37,12 +38,13 @@ exports.isProperty = function(line, strings){
     return retVal;
 }
 
-console.log(exports.isProperty("start-time: fdsj", start_time_strings));
-
 // Removes prefix and following whitespace from str
-exports.removePrefix = function (str, prefix) {
-    var re = new RegExp("\^" + prefix +  "(\\s+)?","g")
-    return str.replace(re, "");
+exports.removePrefix = function (str) {
+    var re = new RegExp(/:(\s+)?(\S+)/)
+    var match = str.match(re);
+    if(match){
+        return match[0].replace(/:(\s+)?/, "");
+    }
 }
 
 // Parses the 'note' of a template tasks. Extracts keywords like 'start-time',
@@ -53,19 +55,19 @@ exports.parseContentString = function(str) {
     var lines = str.split(/\r?\n/);
     var i = 0, dateStr = "";
     for (i = 0; i < lines.length; i += 1) {
-        if (exports.isProperty(lines[i], start_time_strings)) {
-            template_dict.start_time_str = exports.removePrefix(lines[i], "start-time:");
-        } else if (exports.isProperty(lines[i], due_date_strings)) {
-            dateStr = exports.removePrefix(lines[i], "due-date:");
+        if (exports.startsWithOneOf(lines[i], start_time_strings)) {
+            template_dict.start_time_str = exports.removePrefix(lines[i]);
+        } else if (exports.startsWithOneOf(lines[i], due_date_strings)) {
+            dateStr = exports.removePrefix(lines[i]);
             template_dict.due_date = parseDate.parseDateString(dateStr);
         } else if (lines[i].indexOf("starred") === 0) {
             template_dict.starred = true;
-        } else if (exports.isProperty(lines[i], repeat_every_strings)) {
-            template_dict.repeat_every = exports.removePrefix(lines[i], "repeat-every:")
+        } else if (exports.startsWithOneOf(lines[i], repeat_every_strings)) {
+            template_dict.repeat_every = exports.removePrefix(lines[i])
         } else if (lines[i].indexOf("note:") === 0) {
-            template_dict.note = exports.removePrefix(lines[i], "note:")
+            template_dict.note = exports.removePrefix(lines[i])
         } else if (lines[i].indexOf("list:") === 0) {
-            template_dict.list = exports.removePrefix(lines[i], "list:")
+            template_dict.list = exports.removePrefix(lines[i])
         }
     }
 

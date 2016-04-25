@@ -20,7 +20,6 @@ exports.parseDateString = function (str) {
     return date;
 }
 
-// TODO
 exports.parseRepetitionToDates = function (rep){
     return new Date.parse("next " + rep);
 };
