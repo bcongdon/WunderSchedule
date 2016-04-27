@@ -2,12 +2,13 @@
 var scheduler = require('node-schedule');
 
 var api = require('./utils/api.js');
+var app = require('commander')
 var list_api = require('./utils/list.js');
+var log = require("./utils/logging.js").log;
 var parse = require('./utils/parseTaskTemplate.js');
 var task = require("./utils/task.js");
-var log = require("./utils/logging.js").log;
-var app = require('commander')
 
+// Name of list to hold task templates
 var scheduled = "scheduled";
 
 // Calls back with the list_id of "scheduled" list.
@@ -25,6 +26,8 @@ function getScheduledListID(cb) {
 function makeScheduled(cb) {
     api.post({url: '/lists', body: {"title": scheduled}}, function (err, res, body) {
         if(err) {
+            log.error("Error creating scheduled list.");
+            log.error(err);
             process.exit(1);
         }
         cb(body.id);
@@ -34,6 +37,11 @@ function makeScheduled(cb) {
 // Appends given text to the note associated with the given task_id
 function appendNote(task_id, text){
     api({url: '/notes', qs:{task_id: task_id}},function(err,res,body){
+        if(err){
+            log.error("Error appending note.")
+            log.error(err);
+            process.exit(1);
+        }
         if(body.content){
             var contentStr = body.content + text;
             api.post({url:'/notes/:' + id ,qs:{revision: id, content: contentStr}});
@@ -122,6 +130,5 @@ var currSeconds = new Date().getSeconds();
 // Run every 1 minute
 scheduler.scheduleJob(currSeconds + " * * * * *", function(){
     log.info("Running scheduled check at " + new Date().toString("yyyy-mm-dd HH:mm:ss"));
-
     wunderSchedule();
 })

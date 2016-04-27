@@ -18,7 +18,7 @@ if(!(config.get("client_id") && config.get("access_token"))){
     log.error("Could not load credentials. Please run `wunderschedule auth` to input your login.")
 }
 
-module.exports = request.defaults({
+var defaults = {
     method: 'get',
     json: true,
     baseUrl: 'https://a.wunderlist.com/api/v1',
@@ -26,7 +26,9 @@ module.exports = request.defaults({
         'X-Access-Token': config.get("access_token"),
         'X-Client-ID': config.get("client_id")
     }
-})
+}
+
+module.exports = request.defaults(defaults);
 
 module.exports.isAuthenticated = function() {
     return config.get("authentication_time")
