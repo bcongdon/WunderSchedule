@@ -73,19 +73,27 @@ function handleTemplates(templates){
             }
             //See if start_date is before now
             if(start_date_time <= now){
-                //Need to create task from template
-                log.info("Creating task for id " + curr.task_id);
-                createTaskFromTemplate(curr)
-                
-                //If not a repeating task, delete the spawning template
-                if(!curr.repeat_every){
-                    log.info("Deleting non-repeating task template. (" + curr.task_id + ")")
-                    task.deleteTask(curr.task_id);
-                } else {
-                    //Otherwise, set start_date to next occurance
-                    var template = parse.updateTemplateWithRepeat(curr);
-                    if(template) parse.pushTemplateUpdate(template);
-                }
+                task.getTask(curr.task_id, function(ret_task){
+                    //Need to create task from template
+                    log.info("Creating task '" + ret_task.title + "'");
+                    createTaskFromTemplate(curr)
+                    
+                    //If not a repeating task, delete the spawning template
+                    if(!curr.repeat_every){
+                            log.info("Deleting non-repeating task template. ('" + ret_task.title + "')");
+                            task.deleteTask(curr.task_id);
+                    } else {
+                        //Otherwise, set start_date to next occurance
+                        var template = parse.updateTemplateWithRepeat(curr);
+                        if(template) {
+                            parse.pushTemplateUpdate(template);
+                        } else{
+                            // Called when repetition could not be parsed
+                            task.deleteTask(curr.task_id);
+                            log.warn("Deleting task template '" + ret_task.title + "'");
+                        }
+                    }
+                });
             }
         }
     }

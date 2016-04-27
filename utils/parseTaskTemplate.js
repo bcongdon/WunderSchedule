@@ -7,6 +7,7 @@
 */
 
 var note = require('./note.js');
+var task = require('./task.js');
 var parseDate = require('./parseDate');
 var log = require("./logging.js").log;
 require('datejs');
@@ -134,7 +135,9 @@ exports.updateTemplateWithRepeat = function (task_template){
 
         // No 'earliest' date
         if(!rep_dates[0]) {
-            log.warn("Couldn't parse repeat for task template with id " + task_template.task_id);
+            task.getTask(task_template.task_id, function(task){
+                log.warn("Couldn't parse repeat for task template with name '" + task.title + "'");
+            });
             return null
         }
         task_template.due_date = rep_dates[0];
@@ -146,7 +149,9 @@ exports.updateTemplateWithRepeat = function (task_template){
         }
         return task_template;
     };
-    log.error("Template with id " + task_template.task_id + " does not have a repetition defined.")
+    task.getTask(task_template.task_id, function(task){
+        log.error("Template with name '" + task.title + "' does not have a repetition defined.")
+    });
     return null;
 };
 
@@ -160,10 +165,12 @@ exports.extractTemplateTasks = function (list_id, cb) {
         for (i = 0; i < res_body.length; i += 1) {
             if (res_body[i].content) {
                 new_template = exports.parseContentString(res_body[i].content);
-                if(!('start_time' in new_template)){
-                    log.warn("Task with id " + res_body[i].id + " has no start time!")
-                }
                 new_template.task_id = res_body[i].task_id;
+                if(!('start_time' in new_template)){
+                    task.getTask(new_template.task_id, function(task){
+                        log.warn("Task with name '" + task.title + "' has no start time!")
+                    })
+                }
                 templates.push(new_template);
             }
         }
