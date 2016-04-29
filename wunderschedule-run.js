@@ -73,34 +73,32 @@ function handleTemplates(templates){
         var curr = templates[i];
         //Validate that template has start_date
         if(curr.start_time){
-            var start_date_time = curr.start_time;
-            if(curr.due_date){
-                var due_date_str = curr.due_date.toString('yyyy/MM/dd');
-                var start_time_str = curr.start_time.toString("HH:mm:ss");
-                start_date_time = new Date.parse(due_date_str + " " + start_time_str);
-            }
             //See if start_date is before now
-            if(start_date_time <= now){
-                task.getTask(curr.task_id, function(ret_task){
-                    //Need to create task from template
-                    log.info("Creating task '" + ret_task.title + "'");
-                    createTaskFromTemplate(curr)
-                    
-                    //If not a repeating task, delete the spawning template
-                    if(!curr.repeat_every){
+            if(curr.start_time <= now){
+                //Need to create task from template
+                createTaskFromTemplate(curr);
+                
+                //If not a repeating task, delete the spawning template
+                if(!curr.repeat_every){
+                        task.getTask(curr.task_id, function(ret_task){
                             log.info("Deleting non-repeating task template. ('" + ret_task.title + "')");
-                            task.deleteTask(curr.task_id);
-                    } else {
-                        //Otherwise, set start_date to next occurance
-                        var template = parse.updateTemplateWithRepeat(curr);
-                        if(template) {
-                            parse.pushTemplateUpdate(template);
-                        } else{
-                            // Called when repetition could not be parsed
-                            task.deleteTask(curr.task_id);
+                        });
+                        task.deleteTask(curr.task_id);
+                } else {
+                    //Otherwise, set start_date to next occurance
+                    var template = parse.updateTemplateWithRepeat(curr);
+                    if(template) {
+                        parse.pushTemplateUpdate(template);
+                    } else{
+                        // Called when repetition could not be parsed
+                        task.deleteTask(curr.task_id);
+                        task.getTask(curr.task_id, function(ret_task){
                             log.warn("Deleting task template '" + ret_task.title + "'");
-                        }
+                        });
                     }
+                }
+                task.getTask(curr.task_id, function(ret_task){
+                    log.info("Creating task '" + ret_task.title + "'");
                 });
             }
         }
