@@ -123,6 +123,12 @@ describe('parseTaskTemplate.js', function () {
       var output = 'value'
       expect(parse.removePrefix(input, prefix)).to.equal(output);
     })
+    it('should remove only prefix and return everything after', function(){
+      var prefix = 'my_prefix:'
+      var input = 'my_prefix:   value1 value2 v a l u e 3'
+      var output = 'value1 value2 v a l u e 3'
+      expect(parse.removePrefix(input, prefix)).to.equal(output);
+    })
   });
 
   describe('updateTemplateWithRepeat()', function () {
