@@ -1,6 +1,6 @@
 {
   "name": "wunderschedule",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "A Node.js module that schedules start times for Wunderlist tasks.",
   "main": "wunderschedule.js",
   "dependencies": {
