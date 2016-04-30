@@ -93,7 +93,7 @@ function handleTemplates(templates){
                         // Called when repetition could not be parsed
                         task.deleteTask(curr.task_id);
                         task.getTask(curr.task_id, function(ret_task){
-                            log.warn("Deleting task template '" + ret_task.title + "'");
+                            log.warn("Could not parse repeat in template '" + ret_task.title + "'. Deleting.");
                         });
                     }
                 }

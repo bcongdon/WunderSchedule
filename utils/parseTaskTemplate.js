@@ -50,12 +50,9 @@ exports.startsWithOneOf = function(line, strings){
 // Removes prefix and following whitespace from str
 exports.removePrefix = function (str) {
     //var re = new RegExp(/:(\s+)?(\S+)/)
-    var re = new RegExp(/^.+:\s*(.+)/);
-    var match = str.match(re)
-    if(match.length > 1) {
-        return match[1]
-    } 
-    return "";
+    var re = new RegExp(/^[^:]*:\s*/);
+    var match = str.replace(re,"")
+    return match
 }
 
 // Parses the 'note' of a template tasks. Extracts keywords like 'start-time',

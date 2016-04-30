@@ -28,8 +28,9 @@ describe('parseTaskTemplate.js', function () {
     });
     it('should properly format due_date, repeat_every, and start_time', function (){
       var testDate = Date.parse("1/1/2020")
-      var template = {due_date: testDate, start_time: testDate, repeat_every: "day"};
-      var correct = "repeat-every: day\ndue-date: 2020/01/01\nstart-time: 12:00 AM\n"
+      var testTime = new Date.parse('4pm')
+      var template = {due_date: testDate, start_time: testTime, repeat_every: "day"};
+      var correct = "repeat-every: day\ndue-date: 2020/01/01\nstart-time: 04:00 PM\n"
       expect(parse.templateToNoteString(template)).to.equal(correct)
     });
   });
@@ -112,23 +113,25 @@ describe('parseTaskTemplate.js', function () {
 
   describe('removePrefix()', function() {
     it('should remove prefix *without* whitespace following', function(){
-      var prefix = 'my_prefix:'
       var input = 'my_prefix:value'
       var output = 'value'
-      expect(parse.removePrefix(input, prefix)).to.equal(output);
+      expect(parse.removePrefix(input)).to.equal(output);
     });
     it('should remove prefix *with* whitespace following', function(){
-      var prefix = 'my_prefix:'
       var input = 'my_prefix:   value'
       var output = 'value'
-      expect(parse.removePrefix(input, prefix)).to.equal(output);
-    })
+      expect(parse.removePrefix(input)).to.equal(output);
+    });
     it('should remove only prefix and return everything after', function(){
-      var prefix = 'my_prefix:'
       var input = 'my_prefix:   value1 value2 v a l u e 3'
       var output = 'value1 value2 v a l u e 3'
-      expect(parse.removePrefix(input, prefix)).to.equal(output);
-    })
+      expect(parse.removePrefix(input)).to.equal(output);
+    });
+    it('shouldn\'t remove colons further along in the string', function(){
+      var input = 'my_prefix: 06:00 AM'
+      var output = '06:00 AM'
+      expect(parse.removePrefix(input)).to.equal(output);
+    });
   });
 
   describe('updateTemplateWithRepeat()', function () {
@@ -152,6 +155,11 @@ describe('parseTaskTemplate.js', function () {
       template = {repeat_every:"monday"};
       today = new Date.parse('next monday')
       expect(parse.updateTemplateWithRepeat(template).due_date.toString()).to.equal(today.toString());
+    });
+    it('should not alter start time',function(){
+      var time = new Date.parse('4pm')
+      template = {repeat_every:"day", start_time:time}
+      expect(parse.updateTemplateWithRepeat(template).start_time).to.equal(time);
     });
   });
 });
