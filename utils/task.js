@@ -10,8 +10,8 @@ exports.getTask = function (id, cb) {
     api({url: '/tasks/' + id}, function (err, res, body) {
         if (err) {
             log.error("Error getting task!")
-            log.error(err)
-            process.exit(1);
+            log.error(err);
+            throw err;
         }
         cb(body);
     });
@@ -22,9 +22,9 @@ exports.deleteTask = function (id) {
     exports.getTask(id, function (task) {
         api.del({url: '/tasks/' + id, qs: {revision: task.revision}}, function (err, res, body) {
             if (err) {
-                log.error("Error deleting task!")
-                log.error(err)
-                process.exit(1);
+                log.error("Error deleting task!");
+                log.error(err);
+                throw err;
             }
         });
     });
@@ -43,8 +43,8 @@ exports.createTask = function (list_id, title, due_date, starred) {
     api.post({url: '/tasks', body: task_dict}, function (err, res, body) {
         if (err) {
             log.error("Error creating task!")
-            log.error(err)
-            process.exit(1);
+            log.error(err);
+            throw err;
         }
     });
 };
@@ -54,8 +54,8 @@ exports.getTaskList = function(list_id, cb){
     api({url: '/tasks', qs: {list_id:list_id}},function(err,res,body){
         if(err) {
             log.error("Error getting task list!");
-            log.error(err)
-            process.exit(1);
+            log.error(err);
+            throw err;
         }
         cb(body);
     });

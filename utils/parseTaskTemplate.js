@@ -94,7 +94,7 @@ exports.parseContentString = function(str) {
 exports.templateToNoteString = function (template) {
     var contentStr = ""
     if (template.repeat_every) contentStr += "repeat-every: " + template.repeat_every + "\n";
-    if (template.starred) contentStr += "starred" + "\n";
+    if (template.starred) contentStr += "starred\n";
     if (template.list) contentStr += "list: " + template.list + "\n";
     if (template.note) contentStr += "note: " + template.note + "\n";
     if (template.due_date) contentStr += "due-date: " + template.due_date.toString('yyyy/MM/dd') + "\n";
@@ -161,14 +161,16 @@ exports.extractTemplateTasks = function (list_id, cb) {
     note.getNoteList(list_id, function (res_body) {
         var templates = [], new_template = "";
         var i = 0;
+        var warn = function(task){
+            log.warn("Task with name '" + task.title + "' has no start time!")
+        }
         for (i = 0; i < res_body.length; i += 1) {
+            
             if (res_body[i].content) {
                 new_template = exports.parseContentString(res_body[i].content);
                 new_template.task_id = res_body[i].task_id;
                 if(!('start_time' in new_template)){
-                    task.getTask(new_template.task_id, function(task){
-                        log.warn("Task with name '" + task.title + "' has no start time!")
-                    })
+                    task.getTask(new_template.task_id, warn);
                 }
                 templates.push(new_template);
             }
