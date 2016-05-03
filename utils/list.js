@@ -16,7 +16,7 @@ exports.getListID = function(list_name, cb){
 		if(err){
 			log.error("Error getting list ID!")
             log.error(err)
-            process.exit(1);
+            throw err;
 		}
 		var i = 0;
 		for(i = 0; i < body.length; i++){

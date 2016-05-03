@@ -134,9 +134,7 @@ exports.updateTemplateWithRepeat = function (task_template){
 
         // No 'earliest' date
         if(!rep_dates[0]) {
-            task.getTask(task_template.task_id, function(task){
-                log.warn("Couldn't parse repeat for task template with name '" + task.title + "'");
-            });
+            task.logTask(task_template.task_id, 'Couldn\'t parse repeat for task template.', 'warn');
             return null
         }
         task_template.due_date = rep_dates[0];
@@ -147,7 +145,7 @@ exports.updateTemplateWithRepeat = function (task_template){
             );
         }
         return task_template;
-    };
+    }
     task.getTask(task_template.task_id, function(task){
         log.error("Template with name '" + task.title + "' does not have a repetition defined.")
     });
