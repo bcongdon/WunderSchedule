@@ -80,9 +80,7 @@ function handleTemplates(templates){
                 
                 //If not a repeating task, delete the spawning template
                 if(!curr.repeat_every){
-                        task.getTask(curr.task_id, function(ret_task){
-                            log.info("Deleting non-repeating task template. ('" + ret_task.title + "')");
-                        });
+                        task.logTask(curr.task_id, 'Deleting non-repeating task template.', 'info');
                         task.deleteTask(curr.task_id);
                 } else {
                     //Otherwise, set start_date to next occurance
@@ -92,14 +90,11 @@ function handleTemplates(templates){
                     } else{
                         // Called when repetition could not be parsed
                         task.deleteTask(curr.task_id);
-                        task.getTask(curr.task_id, function(ret_task){
-                            log.warn("Could not parse repeat in template '" + ret_task.title + "'. Deleting.");
-                        });
+                        task.logTask(curr.task_id, 'Could not parse repeat in template. Deleting.', 'warn');
                     }
                 }
-                task.getTask(curr.task_id, function(ret_task){
-                    log.info("Creating task '" + ret_task.title + "'");
-                });
+
+                task.logTask(curr.task_id,'Creating task.','info')
             }
         }
     }

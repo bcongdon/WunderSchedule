@@ -60,3 +60,11 @@ exports.getTaskList = function(list_id, cb){
         cb(body);
     });
 }
+
+exports.logTask = function(task_id, str, level){
+    str = str || "Updated!";
+    level = level || "info"
+    exports.getTask(curr.task_id, function(ret_task){
+        log.log(level, "'" + ret_task.title + "': " + str);
+    });
+}
