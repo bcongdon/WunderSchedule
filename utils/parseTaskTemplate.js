@@ -15,25 +15,25 @@ require('datejs');
 var exports = module.exports;
 
 var start_time_strings = ['start-time:',
-                            's:',
-                            'start:'];
+                          's:',
+                          'start:'];
 
 var due_date_strings = ['due-date:',
-                          'due:',
-                          'd:'];
+                        'due:',
+                        'd:'];
 
 var repeat_every_strings = ['repeat-every:',
-                              'repeat:',
-                              'r:'];
+                            'repeat:',
+                            'r:'];
 
 var starred_strings = ['starred',
                        'star'];
 
-var note_strings = ['note',
-                    'n'];
+var note_strings = ['note:',
+                    'n:'];
 
-var list_strings = ['list',
-                    'l']
+var list_strings = ['list:',
+                    'l:']
 
 
 // Line starts with one of the strings in strings
@@ -49,7 +49,6 @@ exports.startsWithOneOf = function(line, strings){
 
 // Removes prefix and following whitespace from str
 exports.removePrefix = function (str) {
-    //var re = new RegExp(/:(\s+)?(\S+)/)
     var re = new RegExp(/^[^:]*:\s*/);
     var match = str.replace(re,"")
     return match

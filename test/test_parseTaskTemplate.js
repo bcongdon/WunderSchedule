@@ -52,9 +52,11 @@ describe('parseTaskTemplate.js', function () {
       expect(parse.parseContentString(contentStr).due_date.toString()).to.equal(parsed.toString());
     });
     it('should default due-date to today', function() {
-      var contentStr = "start-time: 5pm"
-      var parsed = new Date.parse("today at 12pm")
+      var contentStr = "start-time: 5pm";
+      var parsed = new Date.parse("today at 12pm");
+      var correct_start = new Date.parse("5pm")
       expect(parse.parseContentString(contentStr).due_date.toString()).to.equal(parsed.toString());
+      expect(parse.parseContentString(contentStr).start_time.toString()).to.equal(correct_start.toString());
     });
 
     // Start Time Tests
