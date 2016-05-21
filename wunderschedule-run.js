@@ -122,6 +122,6 @@ var currSeconds = new Date().getSeconds();
 
 // Run every 1 minute
 scheduler.scheduleJob(currSeconds + " * * * * *", function(){
-    log.info("Running scheduled check at " + new Date().toString("yyyy-mm-dd HH:mm:ss"));
+    log.info("Running scheduled check at " + new Date().toString("yyyy-MM-dd HH:mm:ss"));
     wunderSchedule();
 })

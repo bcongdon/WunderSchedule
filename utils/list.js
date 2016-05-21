@@ -14,9 +14,8 @@ var exports = module.exports
 exports.getListID = function(list_name, cb){
 	api('/lists',function(err, res, body){
 		if(err){
-			log.error("Error getting list ID!")
-            log.error(err)
-            throw err;
+			log.error("Error getting lists!")
+            log.error(err);
 		}
 		var i = 0;
 		for(i = 0; i < body.length; i++){
