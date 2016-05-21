@@ -16,6 +16,7 @@ exports.getListID = function(list_name, cb){
 		if(err){
 			log.error("Error getting lists!")
             log.error(err);
+            return;
 		}
 		var i = 0;
 		for(i = 0; i < body.length; i++){
