@@ -2,7 +2,7 @@
   [![Build Status](https://travis-ci.org/bcongdon/WunderSchedule.svg?branch=master)](https://travis-ci.org/bcongdon/WunderSchedule)
   [![npm version](https://badge.fury.io/js/wunderschedule.svg)](https://badge.fury.io/js/wunderschedule)
   [![Code Climate](https://codeclimate.com/github/bcongdon/WunderSchedule/badges/gpa.svg)](https://codeclimate.com/github/bcongdon/WunderSchedule)
-  >A Node.js module that allows you to 'schedule' tasks to appear in your Wunderlist todos
+  >:clock3: A Node.js module that schedules start times for Wunderlist tasks
 
 ## Installation
 1. Install with `npm install -g wunderschedule`.
@@ -41,10 +41,10 @@ Suppose I want to remind myself every Friday afternoon to take out the trash.
 
 ### Example Inputs
 `start-time`, `due-date`: 
-  * All times / dates are parsed with [DateJS](http://www.datejs.com/), which has a handy validator on their homepage. If your input parses with that test, then it should work in Wunderschedule.
+  * All times / dates are parsed with [DateJS](http://www.datejs.com/), which has a handy validation tool on their homepage. If your input parses with that test, then it should work in Wunderschedule.
 
 `repeat-every`:
   * Example inputs: Multiple days of week can be specified space-separated (i.e. `Monday Wednesday Friday` is valid). Time units like `day`, `week`, `month`, and `year` are valid, as are scaled versions of these (i.e. `3 days`)
 
 ## Attribution
-* Thanks to [Wunderline](https://github.com/we-are-next/wunderline/blob/master/wunderline.js) for their well documented code. A lot of the implimentation of Wunderschedule was inspired by Wunderline.
+* Thanks to [Wunderline](https://github.com/wayneashleyberry/wunderline) for their well documented code. A good portion of Wunderschedule's implementation was inspired by Wunderline.
