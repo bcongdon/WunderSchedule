@@ -40,7 +40,7 @@ var list_strings = ['list:',
 exports.startsWithOneOf = function(line, strings){
     var retVal = false;
     strings.forEach(function(prefix){
-        if(line.indexOf(prefix) === 0){
+        if(line.toLowerCase().trim().indexOf(prefix) === 0){
             retVal = true;
         }
     });
