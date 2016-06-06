@@ -1,7 +1,7 @@
 # WunderSchedule
-  [![Build Status](https://travis-ci.org/benjamincongdon/WunderSchedule.svg?branch=master)](https://travis-ci.org/benjamincongdon/WunderSchedule)
+  [![Build Status](https://travis-ci.org/bcongdon/WunderSchedule.svg?branch=master)](https://travis-ci.org/bcongdon/WunderSchedule)
   [![npm version](https://badge.fury.io/js/wunderschedule.svg)](https://badge.fury.io/js/wunderschedule)
-  [![Code Climate](https://codeclimate.com/github/benjamincongdon/WunderSchedule/badges/gpa.svg)](https://codeclimate.com/github/benjamincongdon/WunderSchedule)
+  [![Code Climate](https://codeclimate.com/github/bcongdon/WunderSchedule/badges/gpa.svg)](https://codeclimate.com/github/bcongdon/WunderSchedule)
   >A Node.js module that allows you to 'schedule' tasks to appear in your Wunderlist todos
 
 ## Installation
