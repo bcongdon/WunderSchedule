@@ -111,6 +111,8 @@ describe('parseTaskTemplate.js', function () {
       expect(template_dict.list).to.equal(list);
       expect(template_dict.starred).to.equal(true);
     });
+
+    // Formatting tests
     it('should not care about case of prefix', function(){
       var contentStr = "S: 4pm\nR: day"
       var template_dict = parse.parseContentString(contentStr);
@@ -122,6 +124,13 @@ describe('parseTaskTemplate.js', function () {
       var template_dict = parse.parseContentString(contentStr);
       expect(template_dict.repeat_every).to.equal("monday");
       expect(template_dict.start_time.toString()).to.equal((new Date.parse("8am")).toString());
+    });
+    it('should allow semicolons to separate lines', function(){
+      var contentStr = "s: 4pm;l: tasks; n: Semicolons work well"
+      var template_dict = parse.parseContentString(contentStr);
+      expect(template_dict.list).to.equal("tasks");
+      expect(template_dict.note).to.equal("Semicolons work well");
+      expect(template_dict.start_time.toString()).to.equal((new Date.parse("4pm")).toString());
     })
   });
 

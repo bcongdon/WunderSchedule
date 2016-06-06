@@ -59,7 +59,7 @@ exports.removePrefix = function (str) {
 exports.parseContentString = function(str) {
     "use strict";
     var template_dict = {};
-    var lines = str.split(/\r?\n/);
+    var lines = str.split(/[\n\r;]+/);
     var i = 0, dateStr = "";
     for (i = 0; i < lines.length; i += 1) {
         if (exports.startsWithOneOf(lines[i], start_time_strings)) {
