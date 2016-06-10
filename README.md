@@ -34,9 +34,9 @@ Suppose I want to remind myself every Friday afternoon to take out the trash.
 |`start-time:`* |Defines the time (on due date) at which the scheduled task will appear in your todo.|`start:`, `s:` |
 |`due-date:`    |Sets the due date in the resulting todo and gates the day when the todo is created. |`due:`, `d:`   |
 |`repeat-every:`|Defines when the task should be repeated.                                           |`repeat:`, `r:`|
-|`list:`        |The name of the list you want the task to appear in. Defaults to `inbox`.           |               |
+|`list:`        |The name of the list you want the task to appear in. Defaults to `inbox`.           |`l`            |
 |`starred:`     |Whether or not the resulting task should be starred. (No parameters needed)         |`star`         |
-|`note:`        |Note to be added to the resulting task.                                             |               |
+|`note:`        |Note to be added to the resulting task.                                             |`n`            |
 (\* = Required)
 
 ### Example Inputs
@@ -45,6 +45,10 @@ Suppose I want to remind myself every Friday afternoon to take out the trash.
 
 `repeat-every`:
   * Example inputs: Multiple days of week can be specified space-separated (i.e. `Monday Wednesday Friday` is valid). Time units like `day`, `week`, `month`, and `year` are valid, as are scaled versions of these (i.e. `3 days`)
+
+### Miscellany
+* Semicolons can be used as linebreaks in a task template.
+	* e.g: `due:today;start:4pm` is a valid - though hard to parse - template note.
 
 ## Attribution
 * Thanks to [Wunderline](https://github.com/wayneashleyberry/wunderline) for their well documented code. A good portion of Wunderschedule's implementation was inspired by Wunderline.

@@ -25,12 +25,12 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://benjamincongdon@github.com/benjamincongdon/WunderSchedule.git"
+    "url": "git+https://bcongdon@github.com/bcongdon/WunderSchedule.git"
   },
   "author": "Benjamin Congdon",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/benjamincongdon/WunderSchedule/issues"
+    "url": "https://github.com/bcongdon/WunderSchedule/issues"
   },
-  "homepage": "https://github.com/benjamincongdon/WunderSchedule#readme"
+  "homepage": "https://github.com/bcongdon/WunderSchedule#readme"
 }

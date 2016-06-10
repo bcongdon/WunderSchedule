@@ -126,7 +126,7 @@ describe('parseTaskTemplate.js', function () {
       expect(template_dict.start_time.toString()).to.equal((new Date.parse("8am")).toString());
     });
     it('should allow semicolons to separate lines', function(){
-      var contentStr = "s: 4pm;l: tasks; n: Semicolons work well"
+      var contentStr = "s:4pm;l:tasks;n:Semicolons work well"
       var template_dict = parse.parseContentString(contentStr);
       expect(template_dict.list).to.equal("tasks");
       expect(template_dict.note).to.equal("Semicolons work well");
