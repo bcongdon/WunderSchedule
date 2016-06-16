@@ -11,8 +11,8 @@ exports.parseDateString = function (str) {
     "use strict";
     var date = Date.parse(str);
     if (str === "today") {
-        date = Date.today();
-        date.setTimeToNow().addSeconds(-1);
+        // Weirdness caused by Wunderlist timezoning stuff?
+        date = Date.parse("today at 12pm");
     }
     if(!date){
         log.warn("Could not parse \"" + str + "\" to a date.")
