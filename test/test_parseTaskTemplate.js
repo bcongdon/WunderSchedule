@@ -33,6 +33,12 @@ describe('parseTaskTemplate.js', function () {
       var correct = "repeat-every: day\ndue-date: 2020/01/01\nstart-time: 04:00 PM\n"
       expect(parse.templateToNoteString(template)).to.equal(correct)
     });
+
+    it('should properly format reminder time', function() {
+      var template = { reminder: new Date.parse('4:50am') };
+      var correct = "reminder: 04:50 AM\n";
+      expect(parse.templateToNoteString(template)).to.equal(correct);
+    });
   });
 
   describe('parseContentString()', function() {
@@ -110,6 +116,18 @@ describe('parseTaskTemplate.js', function () {
       expect(template_dict.note).to.equal(note);
       expect(template_dict.list).to.equal(list);
       expect(template_dict.starred).to.equal(true);
+    });
+
+    it('should extract reminder time', function() {
+      var contentStr = "reminder: 3pm"
+      var template_dict = parse.parseContentString(contentStr);
+      expect(template_dict.reminder.toString()).to.equal((new Date.parse('3pm').toString()))
+    });
+
+    it('should adjust reminder to due date', function() {
+      var contentStr = "due-date: 1/1/2000; reminder: 4pm";
+      var template_dict = parse.parseContentString(contentStr);
+      expect(template_dict.reminder.toString()).to.equal((new Date.parse('1/1/2000 4pm').toString()));
     });
 
     // Formatting tests

@@ -33,7 +33,11 @@ var note_strings = ['note:',
                     'n:'];
 
 var list_strings = ['list:',
-                    'l:']
+                    'l:'];
+
+var reminder_strings = ['reminder:',
+                        'remind:',
+                        'rem:'];
 
 
 // Line starts with one of the strings in strings
@@ -75,6 +79,8 @@ exports.parseContentString = function(str) {
             template_dict.note = exports.removePrefix(lines[i])
         } else if (exports.startsWithOneOf(lines[i], list_strings)) {
             template_dict.list = exports.removePrefix(lines[i])
+        } else if (exports.startsWithOneOf(lines[i], reminder_strings)){
+            template_dict.reminder_str = exports.removePrefix(lines[i]);
         }
     }
 
@@ -83,8 +89,14 @@ exports.parseContentString = function(str) {
         template_dict.due_date = parseDate.parseDateString("today at 12pm");
     }
     
+    // Assume start time is on due date
     if(template_dict.start_time_str) {
         template_dict.start_time = Date.parse(template_dict.due_date.toString("yyyy/MM/dd") + " " + template_dict.start_time_str)
+    }
+
+    // Assume reminder time is on due date
+    if(template_dict.reminder_str) {
+        template_dict.reminder = new Date.parse(template_dict.due_date.toString("yyyy/MM/dd") + " " + template_dict.reminder_str)
     }
 
     return template_dict;
@@ -98,6 +110,7 @@ exports.templateToNoteString = function (template) {
     if (template.note) contentStr += "note: " + template.note + "\n";
     if (template.due_date) contentStr += "due-date: " + template.due_date.toString('yyyy/MM/dd') + "\n";
     if (template.start_time) contentStr += "start-time: " + new Date(template.start_time).toString('hh:mm tt') + "\n";
+    if (template.reminder) contentStr += 'reminder: ' + new Date(template.reminder).toString('hh:mm tt') + '\n';
     
     return contentStr
 }

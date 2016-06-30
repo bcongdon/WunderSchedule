@@ -30,7 +30,7 @@ exports.deleteTask = function (id) {
     });
 };
 
-exports.createTask = function (list_id, title, due_date, starred) {
+exports.createTask = function (list_id, title, due_date, starred, reminder) {
     'use strict';
     due_date = due_date || "";
     starred = starred || false;
@@ -45,6 +45,20 @@ exports.createTask = function (list_id, title, due_date, starred) {
             log.error("Error creating task!")
             log.error(err);
             throw err;
+        }
+        // Task addition was successful and we have a reminder to log
+        else if(reminder){
+            var reminder_dict = {
+                task_id: res.id,
+                date: reminder.toString()
+            }
+            api.post({url: '/reminders', body: reminder_dict}, function(err, res, body){
+                if(err) {
+                    log.error('Error creating reminder!');
+                    log.error(err);
+                    throw err;
+                }
+            });
         }
     });
 };
