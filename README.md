@@ -37,6 +37,8 @@ Suppose I want to remind myself every Friday afternoon to take out the trash.
 |`list:`        |The name of the list you want the task to appear in. Defaults to `inbox`.           |`l`            |
 |`starred:`     |Whether or not the resulting task should be starred. (No parameters needed)         |`star`         |
 |`note:`        |Note to be added to the resulting task.                                             |`n`            |
+|`reminder:`    |Time to set the Wunderlist reminder for created task                                |`rem`, `remind`|
+
 (\* = Required)
 
 ### Example Inputs
