@@ -38,7 +38,7 @@ exports.createTask = function (list_id, title, due_date, starred, reminder) {
         list_id: list_id,
         title: title,
         due_date: due_date,
-        starred: starred
+        starred: starred,
     };
     api.post({url: '/tasks', body: task_dict}, function (err, res, body) {
         if (err) {
@@ -49,7 +49,7 @@ exports.createTask = function (list_id, title, due_date, starred, reminder) {
         // Task addition was successful and we have a reminder to log
         else if(reminder){
             var reminder_dict = {
-                task_id: res.id,
+                task_id: body.id,
                 date: reminder.toString()
             }
             api.post({url: '/reminders', body: reminder_dict}, function(err, res, body){
