@@ -1,8 +1,12 @@
 # WunderSchedule
-  [![Build Status](https://travis-ci.org/bcongdon/WunderSchedule.svg?branch=master)](https://travis-ci.org/bcongdon/WunderSchedule)
   [![npm version](https://badge.fury.io/js/wunderschedule.svg)](https://badge.fury.io/js/wunderschedule)
+  [![Build Status](https://travis-ci.org/bcongdon/WunderSchedule.svg?branch=master)](https://travis-ci.org/bcongdon/WunderSchedule)
   [![Code Climate](https://codeclimate.com/github/bcongdon/WunderSchedule/badges/gpa.svg)](https://codeclimate.com/github/bcongdon/WunderSchedule)
-  >:clock3: A Node.js module that schedules start times for Wunderlist tasks
+  >:clock3: Enhanced Wunderlist task scheduling for power users
+
+WunderSchedule is a Node.JS module that allows you to greatly extend the due date and reminder systems of Wunderlist. WunderSchedule allows you to:
+  * Schedule starting times for todos, to reduce *'task list paralysis'*
+  * Setup repeating tasks with finer granularity (ever wanted to schedule a task for *just* weekdays?)
 
 ## Installation
 1. Install with `npm install -g wunderschedule`.
