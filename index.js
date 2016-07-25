@@ -1,5 +1,4 @@
 "use strict";
-var scheduler = require('node-schedule');
 
 var api = require('./utils/api.js');
 var app = require('commander')
@@ -101,11 +100,12 @@ function handleTemplates(templates){
     }
 }
 
+
 // Main checking function of WunderSchedule.
 // 1. Gets the list_id of "scheduled"
 // 2. Extracts templates from the notes in that list.
 // 3. Handles each template, which creates tasks if necessary.
-function wunderSchedule(){
+module.exports = function(){
     if(!api.isAuthenticated()){
         log.error("WunderSchedule cannot run without authentication credentials.");
         process.exit(1);
@@ -117,12 +117,3 @@ function wunderSchedule(){
         });
     })
 }
-
-log.info("Setup and watching scheduled list.")
-var currSeconds = new Date().getSeconds();
-
-// Run every 1 minute
-scheduler.scheduleJob(currSeconds + " * * * * *", function(){
-    log.info("Running scheduled check at " + new Date().toString("yyyy-MM-dd HH:mm:ss"));
-    wunderSchedule();
-})
