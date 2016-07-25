@@ -24,7 +24,8 @@ var prompts = [
   }
 ]
 
-console.log("Please create a Wunderlist Application and input your client_id and access_token below.")
+console.log("Please create a Wunderlist Application here: https://developer.wunderlist.com/apps/new")
+console.log("Record your client_id and access_token, then enter them below.")
 inquirer.prompt(prompts).then(function(answers) {
     request.get({
       json: true,
