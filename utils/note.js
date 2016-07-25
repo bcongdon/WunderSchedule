@@ -12,7 +12,7 @@ var exports = module.exports;
 
 // Calls back with a list of notes for given list_id
 exports.getNoteList = function(list_id, cb){
-  api({url: '/notes', qs: {list_id: list_id}}, function(err,res,body){
+  api({url: '/notes', qs: {list_id: list_id}}, function(err, res, body){
     if(err){
       log.error('Error getting note list');
       log.error(err);
@@ -23,7 +23,7 @@ exports.getNoteList = function(list_id, cb){
 };
 
 exports.getNoteFromTask = function (task_id, cb){
-  api({url: '/notes', qs: {task_id: task_id}}, function (err,res,body) {
+  api({url: '/notes', qs: {task_id: task_id}}, function (err, res, body) {
     if (err) {
       log.error('Error getting note from task');
       log.error(err);

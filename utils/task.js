@@ -20,7 +20,7 @@ exports.getTask = function (id, cb) {
 exports.deleteTask = function (id) {
   'use strict';
   exports.getTask(id, function (task) {
-    api.del({url: '/tasks/' + id, qs: {revision: task.revision}}, function (err, res, body) {
+    api.del({url: '/tasks/' + id, qs: {revision: task.revision}}, function (err) {
       if (err) {
         log.error('Error deleting task!');
         log.error(err);
@@ -46,13 +46,13 @@ exports.createTask = function (list_id, title, due_date, starred, reminder) {
       log.error(err);
       throw err;
     }
-        // Task addition was successful and we have a reminder to log
+    // Task addition was successful and we have a reminder to log
     else if(reminder){
       var reminder_dict = {
         task_id: body.id,
         date: reminder.toString()
       };
-      api.post({url: '/reminders', body: reminder_dict}, function(err, res, body){
+      api.post({url: '/reminders', body: reminder_dict}, function(err, res){
         if(err) {
           log.error('Error creating reminder!');
           log.error(err);
@@ -65,7 +65,7 @@ exports.createTask = function (list_id, title, due_date, starred, reminder) {
 
 // Calls back with list of tasks for given list_id
 exports.getTaskList = function(list_id, cb){
-  api({url: '/tasks', qs: {list_id:list_id}},function(err,res,body){
+  api({url: '/tasks', qs: {list_id:list_id}},function(err, res, body){
     if(err) {
       log.error('Error getting task list!');
       log.error(err);
