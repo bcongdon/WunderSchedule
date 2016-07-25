@@ -18,10 +18,12 @@
   },
   "devDependencies": {
     "chai": "^3.5.0",
-    "mocha": "^2.4.5"
+    "mocha": "^2.4.5",
+    "eslint": "^3.1.1"
   },
   "scripts": {
-    "test": "mocha --recursive"
+    "test": "mocha --recursive && eslint *.js utils/*.js",
+    "lint": "eslint *.js utils/*.js"
   },
   "repository": {
     "type": "git",

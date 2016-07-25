@@ -1,7 +1,6 @@
 'use strict';
 
 var api = require('./utils/api.js');
-var app = require('commander');
 var list_api = require('./utils/list.js');
 var log = require('./utils/logging.js').log;
 var parse = require('./utils/parseTaskTemplate.js');
@@ -30,21 +29,6 @@ function makeScheduled(cb) {
       process.exit(1);
     }
     cb(body.id);
-  });
-}
-
-// Appends given text to the note associated with the given task_id
-function appendNote(task_id, text){
-  api({url: '/notes', qs:{task_id: task_id}},function(err,res,body){
-    if(err){
-      log.error('Error appending note.');
-      log.error(err);
-      process.exit(1);
-    }
-    if(body.content){
-      var contentStr = body.content + text;
-      api.post({url:'/notes/:' + id ,qs:{revision: id, content: contentStr}});
-    }
   });
 }
 
