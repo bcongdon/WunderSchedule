@@ -2,7 +2,7 @@
 
 var pkg = require('./package.json');
 
-var app = require('commander')
+var app = require('commander');
 
 app
     .version(pkg.version)
