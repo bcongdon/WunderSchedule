@@ -20,7 +20,7 @@ var prompts = [
         return d.getTime() > 0;
       }
       catch(e) {
-        return '\'' + input + '\' is not a date.'
+        return '\'' + input + '\' is not a date.';
       }
     }
   },
@@ -41,5 +41,5 @@ var prompts = [
 ];
 
 inquirer.prompt(prompts).then(function(answers) {
-  console.log(answers)
+  console.log(answers);
 });
